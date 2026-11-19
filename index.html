@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>آزمایشگاه و درسنامه جامع طیف‌سنجی NMR</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" />
+  <style>
+    :root {
+      --font-sans: 'Vazirmatn', 'Vazir', 'IRANSans', 'Segoe UI', Tahoma, system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, 'Courier New', monospace;
+      --bg-app: #f6f7fb; --bg-surface: #ffffff; --bg-elevated: #f0f3f9; --bg-hover: #e8edf7;
+      --text-primary: #141b2d; --text-secondary: #4a5568; --text-muted: #718096; --border-color: #dce3f0;
+      --accent: #2563eb; --accent-hover: #1d4ed8; --accent-soft: rgba(37, 99, 235, 0.10);
+      --exam-accent: #d97706; --exam-soft: rgba(217, 119, 6, 0.12);
+      --deep-accent: #7c3aed; --deep-soft: rgba(124, 58, 237, 0.09);
+      --success: #059669; --success-soft: rgba(5, 150, 105, 0.12);
+      --danger: #dc2626; --danger-soft: rgba(220, 38, 38, 0.12);
+      --warning: #ca8a04; --warning-soft: rgba(202, 138, 4, 0.12);
+      --sidebar-w: 272px; --header-h: 64px;
+      --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 6px 20px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.16);
+      --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    [data-theme="dark"] {
+      --bg-app: #0c111d; --bg-surface: #131b2e; --bg-elevated: #1b263f; --bg-hover: #243252;
+      --text-primary: #f1f5f9; --text-secondary: #cbd5e1; --text-muted: #94a3b8; --border-color: #263452;
+      --accent: #60a5fa; --accent-hover: #3b82f6; --accent-soft: rgba(96, 165, 250, 0.14);
+      --exam-accent: #f59e0b; --exam-soft: rgba(245, 158, 11, 0.15);
+      --deep-accent: #a78bfa; --deep-soft: rgba(167, 139, 250, 0.14);
+      --success: #34d399; --success-soft: rgba(52, 211, 153, 0.14);
+      --danger: #f87171; --danger-soft: rgba(248, 113, 113, 0.14);
+      --warning: #facc15; --warning-soft: rgba(250, 204, 21, 0.14);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.5);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; font-family: var(--font-sans);
+      background: var(--bg-app); color: var(--text-primary);
+      line-height: 1.75; font-size: 15px; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+    h1, h2, h3, h4 { margin: 0 0 0.65rem; line-height: 1.4; font-weight: 700; color: var(--text-primary); }
+    h1 { font-size: 1.65rem; } h2 { font-size: 1.3rem; } h3 { font-size: 1.08rem; }
+    p { margin: 0 0 0.9rem; color: var(--text-secondary); }
+    a { color: var(--accent); text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+    bdi, .ltr, .formula, code { direction: ltr; unicode-bidi: isolate; font-family: var(--font-mono); }
+    .formula-box {
+      direction: ltr; unicode-bidi: isolate; font-family: var(--font-mono);
+      background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem; margin: 0.75rem 0; text-align: center; font-size: 0.98rem; color: var(--text-primary); overflow-x: auto;
+    }
+    code { background: var(--bg-elevated); padding: 0.12rem 0.4rem; border-radius: 5px; font-size: 0.88em; color: var(--accent); }
+
+    .app-shell { display: flex; min-height: 100vh; }
+    .sidebar {
+      position: fixed; top: 0; right: 0; width: var(--sidebar-w); height: 100vh;
+      background: var(--bg-surface); border-left: 1px solid var(--border-color);
+      display: flex; flex-direction: column; z-index: 100; transition: transform var(--transition);
+    }
+    .sidebar-brand {
+      height: var(--header-h); padding: 0 1.2rem; display: flex; align-items: center;
+      justify-content: space-between; border-bottom: 1px solid var(--border-color);
+    }
+    .brand-title { display: flex; align-items: center; gap: 0.65rem; font-weight: 800; font-size: 1.05rem; color: var(--text-primary); }
+    .brand-logo {
+      width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--deep-accent));
+      color: #fff; display: grid; place-items: center; font-family: var(--font-mono); font-weight: 800; font-size: 0.85rem; flex-shrink: 0;
+    }
+    .sidebar-nav { flex: 1; overflow-y: auto; padding: 0.85rem 0.75rem; }
+    .nav-group-label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); padding: 0.65rem 0.65rem 0.3rem; }
+    .nav-item {
+      width: 100%; min-height: 44px; display: flex; align-items: center; justify-content: space-between;
+      gap: 0.6rem; padding: 0.55rem 0.8rem; margin-bottom: 0.25rem; border: 1px solid transparent;
+      border-radius: var(--radius-sm); background: transparent; color: var(--text-secondary);
+      font-size: 0.92rem; font-weight: 500; text-align: right; transition: all var(--transition);
+    }
+    .nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+    .nav-item.active { background: var(--accent-soft); color: var(--accent); border-color: rgba(37, 99, 235, 0.22); font-weight: 700; }
+    .nav-item-main { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+    .nav-item-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .nav-badge { font-size: 0.72rem; font-family: var(--font-mono); padding: 0.1rem 0.45rem; border-radius: 999px; background: var(--bg-elevated); color: var(--text-muted); flex-shrink: 0; }
+    .nav-item.done .nav-badge { background: var(--success-soft); color: var(--success); }
+    .sidebar-footer { padding: 0.85rem 1rem; border-top: 1px solid var(--border-color); background: var(--bg-elevated); }
+    .mini-progress-row { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.4rem; }
+    .progress-bar { width: 100%; height: 8px; background: var(--border-color); border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--success)); border-radius: 999px; transition: width 0.35s ease; }
+
+    .main-wrapper { flex: 1; margin-right: var(--sidebar-w); display: flex; flex-direction: column; min-width: 0; }
+    .top-header {
+      position: sticky; top: 0; height: var(--header-h); background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color); padding: 0 1.25rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; z-index: 80;
+    }
+    .header-right, .header-left { display: flex; align-items: center; gap: 0.6rem; }
+    .icon-btn {
+      min-height: 40px; min-width: 40px; padding: 0 0.75rem; border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-primary);
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
+      font-size: 0.86rem; font-weight: 600; transition: all var(--transition);
+    }
+    .icon-btn:hover { background: var(--bg-hover); border-color: var(--accent); }
+    .icon-btn.exam-active { background: var(--exam-soft); border-color: var(--exam-accent); color: var(--exam-accent); }
+    .menu-toggle { display: none; }
+    .search-trigger {
+      min-height: 40px; padding: 0 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);
+      background: var(--bg-elevated); color: var(--text-muted); display: inline-flex; align-items: center;
+      gap: 0.6rem; font-size: 0.85rem; transition: all var(--transition);
+    }
+    .search-trigger:hover { border-color: var(--accent); color: var(--text-primary); }
+    .kbd { font-family: var(--font-mono); font-size: 0.74rem; padding: 0.1rem 0.35rem; border-radius: 5px; border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-muted); }
+    .main-content { max-width: 1080px; width: 100%; margin: 0 auto; padding: 1.5rem 1.4rem 5rem; }
+
+    .card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.15rem; box-shadow: var(--shadow-sm); }
+    .card-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 0.9rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(--border-color); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+    .grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+    .btn {
+      min-height: 44px; padding: 0.55rem 1.1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);
+      background: var(--bg-surface); color: var(--text-primary); font-size: 0.9rem; font-weight: 600;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all var(--transition);
+    }
+    .btn:hover:not(:disabled) { background: var(--bg-hover); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
+    .btn-success { background: var(--success); border-color: var(--success); color: #fff; }
+    .btn-danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+    .btn-warning { background: var(--exam-accent); border-color: var(--exam-accent); color: #fff; }
+    .btn-sm { min-height: 36px; padding: 0.35rem 0.75rem; font-size: 0.82rem; }
+
+    .badge { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.18rem 0.6rem; border-radius: 999px; font-size: 0.76rem; font-weight: 700; }
+    .badge-core { background: var(--exam-soft); color: var(--exam-accent); }
+    .badge-deep { background: var(--deep-soft); color: var(--deep-accent); }
+    .badge-success { background: var(--success-soft); color: var(--success); }
+    .badge-info { background: var(--accent-soft); color: var(--accent); }
+    .badge-danger { background: var(--danger-soft); color: var(--danger); }
+
+    .callout { border-radius: var(--radius-sm); padding: 0.95rem 1.1rem; margin: 0.9rem 0; border-right: 4px solid var(--accent); background: var(--accent-soft); }
+    .callout.exam-core { border-right-color: var(--exam-accent); background: var(--exam-soft); }
+    .callout.warning { border-right-color: var(--danger); background: var(--danger-soft); }
+    .callout.success { border-right-color: var(--success); background: var(--success-soft); }
+
+    .deep-learning { border: 1px solid var(--border-color); border-right: 4px solid var(--deep-accent); border-radius: var(--radius-sm); background: var(--bg-surface); margin: 0.95rem 0; overflow: hidden; }
+    .deep-learning-header { width: 100%; padding: 0.75rem 1rem; background: var(--deep-soft); border: none; display: flex; align-items: center; justify-content: space-between; color: var(--deep-accent); font-weight: 700; font-size: 0.92rem; text-align: right; }
+    .deep-learning-body { padding: 1rem 1.1rem; border-top: 1px solid var(--border-color); }
+    .deep-learning .chevron { transition: transform var(--transition); display: inline-block; }
+    body.exam-mode .deep-learning:not(.dl-open) .deep-learning-body { display: none; }
+    body.exam-mode .deep-learning:not(.dl-open) .chevron { transform: rotate(180deg); }
+    body:not(.exam-mode) .deep-learning.dl-closed .deep-learning-body { display: none; }
+    body:not(.exam-mode) .deep-learning.dl-closed .chevron { transform: rotate(180deg); }
+
+    .exam-mode-banner {
+      display: none; background: var(--exam-soft); border: 1px solid var(--exam-accent); color: var(--exam-accent);
+      padding: 0.65rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.88rem;
+      font-weight: 600; align-items: center; justify-content: space-between; gap: 0.75rem;
+    }
+    body.exam-mode .exam-mode-banner { display: flex; }
+
+    .tabs-bar { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
+    .tab-btn { min-height: 40px; padding: 0.4rem 0.9rem; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--text-secondary); font-weight: 600; font-size: 0.88rem; transition: all var(--transition); }
+    .tab-btn:hover { background: var(--bg-hover); }
+    .tab-btn.active { background: var(--accent-soft); color: var(--accent); border-color: rgba(37, 99, 235, 0.25); }
+
+    .table-wrap { width: 100%; overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--radius-sm); margin: 0.8rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border-color); text-align: right; }
+    th { background: var(--bg-elevated); font-weight: 700; color: var(--text-primary); }
+    tr:last-child td { border-bottom: none; }
+
+    .flashcard-stage { perspective: 1100px; margin: 1rem 0; }
+    .flashcard-inner { position: relative; min-height: 210px; width: 100%; transform-style: preserve-3d; transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); cursor: pointer; }
+    .flashcard-inner.flipped { transform: rotateY(180deg); }
+    .flashcard-face {
+      position: absolute; inset: 0; backface-visibility: hidden; background: var(--bg-elevated);
+      border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;
+      display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+    }
+    .flashcard-back { transform: rotateY(180deg); background: var(--bg-surface); border-color: var(--accent); }
+    .fc-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; margin-top: 1rem; }
+
+    .quiz-timer { font-family: var(--font-mono); font-size: 1.05rem; font-weight: 800; padding: 0.35rem 0.8rem; border-radius: var(--radius-sm); background: var(--danger-soft); color: var(--danger); direction: ltr; }
+    .quiz-option {
+      width: 100%; min-height: 46px; padding: 0.7rem 1rem; margin-bottom: 0.55rem; border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-primary);
+      text-align: right; display: flex; align-items: center; gap: 0.75rem; font-size: 0.92rem; transition: all var(--transition);
+    }
+    .quiz-option:hover:not(:disabled) { border-color: var(--accent); background: var(--bg-hover); }
+    .quiz-option.selected { border-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+
+    .nmr-widget { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; margin: 1rem 0; }
+    .nmr-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .nmr-svg-wrap { width: 100%; overflow-x: auto; background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.5rem; }
+    .nmr-svg { width: 100%; min-width: 560px; height: auto; display: block; }
+    .nmr-peak-group { cursor: pointer; transition: opacity 0.2s ease; }
+    .nmr-peak-group.dimmed { opacity: 0.28; }
+    .nmr-peak-group.highlighted .peak-path { stroke-width: 2.8; filter: drop-shadow(0 0 4px currentColor); }
+    .mol-group-pill { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.7rem; border-radius: 999px; border: 1px solid var(--border-color); background: var(--bg-elevated); font-size: 0.83rem; font-weight: 600; cursor: pointer; transition: all var(--transition); }
+    .mol-group-pill.active, .mol-group-pill:hover { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+    .nmr-info-bar { margin-top: 0.75rem; padding: 0.75rem 0.95rem; border-radius: var(--radius-sm); background: var(--bg-elevated); border: 1px solid var(--border-color); font-size: 0.88rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem; }
+
+    .fab-cheat {
+      position: fixed; bottom: 1.35rem; left: 1.35rem; z-index: 90; min-height: 48px; padding: 0 1.15rem;
+      border-radius: 999px; border: none; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.9rem;
+      box-shadow: var(--shadow-lg); display: inline-flex; align-items: center; gap: 0.5rem; transition: all var(--transition);
+    }
+    .fab-cheat:hover:not(:disabled) { transform: translateY(-2px); background: var(--accent-hover); }
+    .fab-cheat:disabled { background: var(--text-muted); cursor: not-allowed; opacity: 0.75; }
+    .drawer-backdrop, .modal-backdrop { position: fixed; inset: 0; background: rgba(10, 15, 28, 0.55); backdrop-filter: blur(3px); z-index: 150; display: none; align-items: center; justify-content: center; }
+    .drawer-backdrop.open, .modal-backdrop.open { display: flex; }
+    .cheat-drawer { position: fixed; top: 0; left: 0; width: min(520px, 94vw); height: 100vh; background: var(--bg-surface); border-right: 1px solid var(--border-color); box-shadow: var(--shadow-lg); display: flex; flex-direction: column; z-index: 160; transform: translateX(-100%); transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1); }
+    .cheat-drawer.open { transform: translateX(0); }
+    .drawer-header { padding: 1rem 1.2rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; }
+    .drawer-body { flex: 1; overflow-y: auto; padding: 1rem 1.2rem 2rem; }
+
+    .search-modal { width: min(640px, 92vw); max-height: 80vh; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); display: flex; flex-direction: column; overflow: hidden; }
+    .search-input-wrap { padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 0.75rem; }
+    .search-input { flex: 1; border: none; outline: none; background: transparent; color: var(--text-primary); font-family: inherit; font-size: 1rem; }
+    .search-results { overflow-y: auto; padding: 0.6rem; max-height: 62vh; }
+    .search-hit { width: 100%; padding: 0.7rem 0.9rem; border-radius: var(--radius-sm); border: none; background: transparent; text-align: right; display: flex; flex-direction: column; gap: 0.2rem; color: var(--text-primary); }
+    .search-hit:hover { background: var(--bg-hover); }
+    .search-hit-meta { font-size: 0.76rem; color: var(--text-muted); }
+
+    .toast { position: fixed; bottom: 1.4rem; right: 1.4rem; z-index: 200; background: var(--text-primary); color: var(--bg-surface); padding: 0.7rem 1.1rem; border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 600; box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; transform: translateY(10px); transition: all 0.25s ease; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .sidebar-backdrop { display: none; position: fixed; inset: 0; background: rgba(10, 15, 28, 0.5); z-index: 95; }
+    .sidebar-backdrop.open { display: block; }
+
+    @media (max-width: 960px) {
+      .sidebar { transform: translateX(100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main-wrapper { margin-right: 0; }
+      .menu-toggle { display: inline-flex; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .main-content { padding: 1rem 0.9rem 5.5rem; }
+      .search-trigger .search-text, .search-trigger .kbd { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <div id="sidebarBackdrop" class="sidebar-backdrop" onclick="UI.toggleSidebar(false)"></div>
+    <aside id="sidebar" class="sidebar" aria-label="ناوبری اصلی">
+      <div class="sidebar-brand">
+        <div class="brand-title"><div class="brand-logo">NMR</div><span>طیف‌سنجی NMR</span></div>
+        <button class="icon-btn menu-toggle" onclick="UI.toggleSidebar(false)" aria-label="بستن منو">✕</button>
+      </div>
+      <nav id="sidebarNav" class="sidebar-nav"></nav>
+      <div class="sidebar-footer">
+        <div class="mini-progress-row"><span>پیشرفت کل دوره</span><bdi id="sidebarProgressPct">0%</bdi></div>
+        <div class="progress-bar"><div id="sidebarProgressFill" class="progress-fill" style="width:0%;"></div></div>
+      </div>
+    </aside>
+
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div class="header-right">
+          <button class="icon-btn menu-toggle" onclick="UI.toggleSidebar(true)" aria-label="باز کردن منو">☰</button>
+          <button class="search-trigger" onclick="SearchEngine.open()" title="جستجوی فوری (Ctrl+K)">
+            <span>🔍</span><span class="search-text">جستجو در کل درسنامه و آزمون‌ها...</span><span class="kbd"><bdi>Ctrl+K</bdi></span>
+          </button>
+        </div>
+        <div class="header-left">
+          <button id="examModeBtn" class="icon-btn" onclick="AppState.toggleExamMode()" title="بستن خودکار بخش‌های تحلیل عمیق برای مرور شب امتحان"><span>⚡</span><span>حالت شب امتحان</span></button>
+          <button id="themeToggleBtn" class="icon-btn" onclick="AppState.toggleTheme()" title="تغییر تم روشن/تاریک" aria-label="تغییر تم">🌙</button>
+        </div>
+      </header>
+      <main class="main-content">
+        <div class="exam-mode-banner">
+          <span>⚡ حالت شب امتحان فعال است: بلوک‌های تحلیل عمیق (<code>.deep-learning</code>) بسته شدند تا فقط نکات کلیدی و امتحانی برجسته باشند.</span>
+          <button class="btn btn-sm" onclick="AppState.toggleExamMode()">خروج از حالت امتحان</button>
+        </div>
+        <div id="appView"></div>
+      </main>
+    </div>
+  </div>
+
+  <button id="fabCheat" class="fab-cheat" onclick="CheatSheet.toggle(true)"><span>📑</span><span>مرجع سریع NMR</span></button>
+  <div id="cheatBackdrop" class="drawer-backdrop" onclick="CheatSheet.toggle(false)"></div>
+  <aside id="cheatDrawer" class="cheat-drawer" aria-label="مرجع سریع طیف‌سنجی NMR">
+    <div class="drawer-header">
+      <h3 style="margin:0;">📑 کشوی مرجع سریع (Cheat Sheet)</h3>
+      <button class="icon-btn" onclick="CheatSheet.toggle(false)" aria-label="بستن">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="tabs-bar" id="cheatTabs">
+        <button class="tab-btn active" onclick="CheatSheet.switchTab('h1', this)"><bdi>¹H ppm</bdi></button>
+        <button class="tab-btn" onclick="CheatSheet.switchTab('c13', this)"><bdi>¹³C & DEPT</bdi></button>
+        <button class="tab-btn" onclick="CheatSheet.switchTab('solvents', this)">حلال‌ها</button>
+        <button class="tab-btn" onclick="CheatSheet.switchTab('formulas', this)">فرمول‌ها</button>
+      </div>
+      <div id="cheatContent"></div>
+    </div>
+  </aside>
+
+  <div id="searchModalBackdrop" class="modal-backdrop" onclick="if(event.target===this) SearchEngine.close()">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="جستجوی فوری">
+      <div class="search-input-wrap">
+        <span>🔍</span>
+        <input id="globalSearchInput" class="search-input" type="text" placeholder="عبارت مورد نظر را تایپ کنید (مثلاً: DEPT، لارمور، CDCl3، کارپلاس)..." oninput="SearchEngine.run(this.value)" />
+        <button class="icon-btn btn-sm" onclick="SearchEngine.close()">Esc</button>
+      </div>
+      <div id="globalSearchResults" class="search-results"></div>
+    </div>
+  </div>
+  <div id="toast" class="toast"></div>
+
+  <script>
+    /* =========================================================
+       1. CORE DATA STORE & REGISTRATION HELPERS
+       ========================================================= */
+    const COURSE_DATA = {
+      meta: {
+        title: 'طیف‌سنجی رزونانس مغناطیسی هسته‌ای (NMR)',
+        subtitle: 'درسنامه یکپارچه، آزمایشگاه ۱۷ شبیه‌ساز تعاملی و بانک جامع آزمون — آنالیز دستگاهی ۲ (دکتر مرادی)',
+        totalSessions: 7
+      },
+      sessions: [],
+      simulators: [],
+      examBank: { historical: [], examples: [], practice: [] }
+    };
+    function registerSession(s) {
+      const i = COURSE_DATA.sessions.findIndex(x => x.id === s.id);
+      if (i >= 0) COURSE_DATA.sessions[i] = s; else COURSE_DATA.sessions.push(s);
+      COURSE_DATA.sessions.sort((a, b) => a.number - b.number);
+    }
+    function registerSimulator(sim) {
+      const i = COURSE_DATA.simulators.findIndex(x => x.id === sim.id);
+      if (i >= 0) COURSE_DATA.simulators[i] = sim; else COURSE_DATA.simulators.push(sim);
+    }
+    function registerExamBank(p) {
+      if (Array.isArray(p.historical)) COURSE_DATA.examBank.historical.push(...p.historical);
+      if (Array.isArray(p.examples)) COURSE_DATA.examBank.examples.push(...p.examples);
+      if (Array.isArray(p.practice)) COURSE_DATA.examBank.practice.push(...p.practice);
+    }
+
+    /* =========================================================
+       2. PERSISTENT STATE ENGINE
+       ========================================================= */
+    const STORAGE_KEY = 'nmr_spa_state_v1';
+    const AppState = {
+      data: { theme: 'light', examMode: false, completedSections: {}, completedSessions: {}, flashcards: {}, quizHistory: [] },
+      timedExamActive: false,
+      load() {
+        try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) this.data = Object.assign({}, this.data, JSON.parse(raw)); } catch {}
+        this.applyPreferences();
+      },
+      save() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+          if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === 'function') window.notebookAppApi.setAppState(this.data);
+        } catch {}
+        UI.updateGlobalProgress();
+      },
+      applyPreferences() {
+        document.documentElement.setAttribute('data-theme', this.data.theme);
+        document.getElementById('themeToggleBtn').textContent = this.data.theme === 'dark' ? '☀️' : '🌙';
+        document.body.classList.toggle('exam-mode', !!this.data.examMode);
+        document.getElementById('examModeBtn').classList.toggle('exam-active', !!this.data.examMode);
+      },
+      toggleTheme() { this.data.theme = this.data.theme === 'dark' ? 'light' : 'dark'; this.applyPreferences(); this.save(); },
+      toggleExamMode() { this.data.examMode = !this.data.examMode; this.applyPreferences(); this.save(); UI.toast(this.data.examMode ? 'حالت شب امتحان فعال شد' : 'حالت مطالعه کامل فعال شد'); },
+      toggleSessionDone(n) { if (this.data.completedSessions[n]) delete this.data.completedSessions[n]; else this.data.completedSessions[n] = true; this.save(); Router.renderSidebar(); },
+      setFlashcardMastery(id, lvl) { this.data.flashcards[id] = lvl; this.save(); },
+      recordQuiz(entry) { this.data.quizHistory.unshift({ ...entry, date: new Date().toLocaleDateString('fa-IR') }); if (this.data.quizHistory.length > 40) this.data.quizHistory.pop(); this.save(); },
+      setTimedExamLock(locked) {
+        this.timedExamActive = locked;
+        const fab = document.getElementById('fabCheat');
+        if (locked) { CheatSheet.toggle(false); fab.disabled = true; fab.innerHTML = '<span>🔒</span><span>مرجع قفل شد</span>'; }
+        else { fab.disabled = false; fab.innerHTML = '<span>📑</span><span>مرجع سریع NMR</span>'; }
+      },
+      exportJSON() {
+        const blob = new Blob([JSON.stringify(this.data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob); const a = document.createElement('a');
+        a.href = url; a.download = `nmr-progress-${new Date().toISOString().slice(0, 10)}.json`; a.click(); URL.revokeObjectURL(url);
+        UI.toast('فایل پشتیبان JSON دانلود شد');
+      },
+      importJSON(file) {
+        const r = new FileReader();
+        r.onload = (e) => {
+          try {
+            const p = JSON.parse(e.target.result);
+            if (typeof p !== 'object' || !p) throw new Error();
+            this.data = Object.assign({}, this.data, p); this.applyPreferences(); this.save(); Router.renderCurrent();
+            UI.toast('پیشرفت با موفقیت بازیابی شد');
+          } catch { UI.toast('خطا: فایل JSON معتبر نیست'); }
+        };
+        r.readAsText(file);
+      },
+      resetAll() {
+        if (!confirm('آیا از پاک کردن تمام پیشرفت‌های ذخیره‌شده مطمئن هستید؟')) return;
+        this.data.completedSections = {}; this.data.completedSessions = {}; this.data.flashcards = {}; this.data.quizHistory = [];
+        this.save(); Router.renderCurrent(); UI.toast('تمام داده‌های پیشرفت بازنشانی شدند');
+      }
+    };
+
+    /* =========================================================
+       3. FLOATING CHEAT SHEET ENGINE
+       ========================================================= */
+    const CheatSheet = {
+      currentTab: 'h1',
+      toggle(open) {
+        if (open && AppState.timedExamActive) { UI.toast('در حالت آزمون زمان‌دار دسترسی به مرجع سریع غیرفعال است'); return; }
+        document.getElementById('cheatDrawer').classList.toggle('open', open);
+        document.getElementById('cheatBackdrop').classList.toggle('open', open);
+        if (open) this.render();
+      },
+      switchTab(tab, btn) {
+        this.currentTab = tab;
+        document.querySelectorAll('#cheatTabs .tab-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        this.render();
+      },
+      render() {
+        const el = document.getElementById('cheatContent');
+        if (this.currentTab === 'h1') {
+          el.innerHTML = `<h4>جدول شیفت شیمیایی پروتون (<bdi>¹H NMR</bdi>)</h4><div class="table-wrap"><table><thead><tr><th>نوع پروتون</th><th>بازه (<bdi>ppm</bdi>)</th></tr></thead><tbody>
+            <tr><td>استاندارد داخلی (<bdi>TMS</bdi>)</td><td><bdi>0.0</bdi></td></tr>
+            <tr><td>آلکان (<bdi>R-CH₃ / R-CH₂-R / R₃CH</bdi>)</td><td><bdi>0.7 – 1.7</bdi></td></tr>
+            <tr><td>آلیلی / مجاور کربونیل (<bdi>C=C-CH / O=C-CH</bdi>)</td><td><bdi>1.6 – 2.6</bdi></td></tr>
+            <tr><td>بنزیلی (<bdi>Ar-CH</bdi>)</td><td><bdi>2.3 – 2.7</bdi></td></tr>
+            <tr><td>آلکین انتهایی (<bdi>R-C≡C-H</bdi>)</td><td><bdi>1.7 – 2.7</bdi></td></tr>
+            <tr><td>متصل به هالوژن/اکسیژن (<bdi>O-CH, X-CH</bdi>)</td><td><bdi>3.2 – 4.8</bdi></td></tr>
+            <tr><td>آلکن / وینیلی (<bdi>C=C-H</bdi>)</td><td><bdi>4.5 – 6.5</bdi></td></tr>
+            <tr><td>آروماتیک (<bdi>Ar-H</bdi>)</td><td><bdi>6.5 – 8.0</bdi></td></tr>
+            <tr><td>آلدهید (<bdi>R-CHO</bdi>)</td><td><bdi>9.0 – 10.0</bdi></td></tr>
+            <tr><td>اسید کربوکسیلیک (<bdi>R-COOH</bdi>)</td><td><bdi>11.0 – 12.5</bdi></td></tr>
+            <tr><td>تبادل‌پذیر (<bdi>OH, NH, SH</bdi>)</td><td><bdi>0.5 – 5.0 (var)</bdi></td></tr>
+          </tbody></table></div>`;
+        } else if (this.currentTab === 'c13') {
+          el.innerHTML = `<h4>شیفت شیمیایی کربن (<bdi>¹³C NMR</bdi>)</h4><div class="table-wrap"><table><thead><tr><th>نوع کربن</th><th>بازه (<bdi>ppm</bdi>)</th></tr></thead><tbody>
+            <tr><td>آلکان (<bdi>sp³ C-C</bdi>)</td><td><bdi>0 – 50</bdi></td></tr>
+            <tr><td>متصل به هترواتم (<bdi>C-O, C-N, C-X</bdi>)</td><td><bdi>40 – 80</bdi></td></tr>
+            <tr><td>آلکین (<bdi>C≡C</bdi>)</td><td><bdi>65 – 90</bdi></td></tr>
+            <tr><td>آلکن و آروماتیک (<bdi>C=C, Ar</bdi>)</td><td><bdi>100 – 160</bdi></td></tr>
+            <tr><td>کربونیل استر / اسید / آمید</td><td><bdi>160 – 185</bdi></td></tr>
+            <tr><td>کربونیل آلدهید / کتون</td><td><bdi>190 – 220</bdi></td></tr>
+          </tbody></table></div>
+          <h4 style="margin-top:1rem;">جدول طلایی <bdi>DEPT</bdi></h4><div class="table-wrap"><table><thead><tr><th>گروه</th><th><bdi>Normal</bdi></th><th><bdi>DEPT-90</bdi></th><th><bdi>DEPT-135</bdi></th></tr></thead><tbody>
+            <tr><td><bdi>CH₃</bdi></td><td>مثبت (+)</td><td>خاموش</td><td>رو به بالا (+)</td></tr>
+            <tr><td><bdi>CH₂</bdi></td><td>مثبت (+)</td><td>خاموش</td><td>رو به پایین (−)</td></tr>
+            <tr><td><bdi>CH</bdi></td><td>مثبت (+)</td><td>رو به بالا (+)</td><td>رو به بالا (+)</td></tr>
+            <tr><td><bdi>Cq</bdi></td><td>مثبت (+)</td><td>خاموش</td><td>خاموش</td></tr>
+          </tbody></table></div>`;
+        } else if (this.currentTab === 'solvents') {
+          el.innerHTML = `<h4>پیک حلال‌های دوتره رایج</h4><div class="table-wrap"><table><thead><tr><th>حلال</th><th><bdi>¹H (ppm)</bdi></th><th><bdi>¹³C (ppm)</bdi></th></tr></thead><tbody>
+            <tr><td><strong><bdi>CDCl₃</bdi></strong></td><td><bdi>7.26 (s)</bdi><br/><small>آب: <bdi>1.56</bdi></small></td><td><bdi>77.16 (t, 1:1:1)</bdi></td></tr>
+            <tr><td><strong><bdi>DMSO-d₆</bdi></strong></td><td><bdi>2.50 (quin)</bdi><br/><small>آب: <bdi>3.33</bdi></small></td><td><bdi>39.52 (sep, 7)</bdi></td></tr>
+            <tr><td><strong><bdi>D₂O</bdi></strong></td><td><bdi>4.80 (s)</bdi></td><td>—</td></tr>
+            <tr><td><strong><bdi>CD₃OD</bdi></strong></td><td><bdi>3.31 (quin), 4.87 (s)</bdi></td><td><bdi>49.00 (sep)</bdi></td></tr>
+          </tbody></table></div>`;
+        } else {
+          el.innerHTML = `<h4>فرمول‌های حیاتی امتحان</h4>
+            <p><strong>۱. درجه غیراشباعی (<bdi>DU</bdi>):</strong></p><div class="formula-box">DU = (2C + 2 + N − H − X) / 2</div>
+            <p><strong>۲. فرکانس لارمور:</strong></p><div class="formula-box">ν = (γ · B₀) / (2π) &nbsp;|&nbsp; ΔE = hν</div>
+            <p><strong>۳. شیفت شیمیایی (<bdi>ppm</bdi>):</strong></p><div class="formula-box">δ (ppm) = (ν_sample − ν_TMS) [Hz] / ν₀ [MHz]</div>
+            <p><strong>۴. ثابت کوپلاژ (<bdi>J</bdi>):</strong></p><div class="formula-box">J (Hz) = Δδ (ppm) × ν₀ (MHz)</div>
+            <p><strong>۵. معیار مرتبه اول:</strong></p><div class="formula-box">Δν / J &gt; 6</div>`;
+        }
+      }
+    };
+
+    /* =========================================================
+       4. INTERACTIVE SVG SPECTRUM ENGINE
+       ========================================================= */
+    const NMRSpectrumEngine = {
+      pascal(n) { const r = [1]; for (let i = 0; i < n; i++) r.push(r[i] * (n - i) / (i + 1)); return r; },
+      getSubPeaks(peak, freqMHz) {
+        const mult = (peak.multiplicity || 's').toLowerCase();
+        const jPpm = (peak.jHz || 7) / freqMHz, j2Ppm = (peak.j2Hz || 2.5) / freqMHz, h = peak.height || 0.85;
+        const mapN = { s: 0, d: 1, t: 2, q: 3, quin: 4, p: 4, sex: 5, sep: 6 };
+        if (mult === 'dd') return [
+          { ppm: peak.ppm - (jPpm + j2Ppm) / 2, relH: h * 0.85 }, { ppm: peak.ppm - (jPpm - j2Ppm) / 2, relH: h * 0.85 },
+          { ppm: peak.ppm + (jPpm - j2Ppm) / 2, relH: h * 0.85 }, { ppm: peak.ppm + (jPpm + j2Ppm) / 2, relH: h * 0.85 }
+        ];
+        if (mult === 'broad' || mult === 'br') return [{ ppm: peak.ppm, relH: h * 0.55, broad: true }];
+        const n = mapN[mult] !== undefined ? mapN[mult] : 0, weights = this.pascal(n), maxW = Math.max(...weights);
+        return weights.map((w, idx) => ({ ppm: peak.ppm + (idx - n / 2) * jPpm, relH: h * (w / maxW) }));
+      },
+      render(container, config) {
+        const type = config.type || '1H', minPpm = config.minPpm !== undefined ? config.minPpm : 0;
+        const maxPpm = config.maxPpm !== undefined ? config.maxPpm : (type === '13C' ? 220 : 13);
+        const freqMHz = config.freqMHz || (type === '13C' ? 75 : 300), peaks = config.peaks || [];
+        const uid = 'nmr_' + Math.random().toString(36).slice(2, 8);
+        const W = 760, H = 260, padL = 28, padR = 28, padT = 24, padB = 42, plotW = W - padL - padR, baseY = H - padB, maxPeakH = baseY - padT - 18;
+        const ppmToX = (ppm) => padL + ((maxPpm - ppm) / (maxPpm - minPpm)) * plotW;
+
+        const step = type === '13C' ? 20 : 1;
+        let ticksSvg = '';
+        for (let p = minPpm; p <= maxPpm; p += step) {
+          const x = ppmToX(p);
+          ticksSvg += `<line x1="${x}" y1="${baseY}" x2="${x}" y2="${baseY + 6}" stroke="var(--text-muted)"/><text x="${x}" y="${baseY + 20}" text-anchor="middle" font-size="11" font-family="var(--font-mono)" fill="var(--text-muted)">${p}</text>`;
+        }
+        let tmsSvg = '';
+        if (config.showTMS !== false && minPpm <= 0) {
+          const tx = ppmToX(0);
+          tmsSvg = `<g class="nmr-peak-group" data-peak-id="tms" opacity="0.65"><path d="M ${tx - 4} ${baseY} Q ${tx} ${baseY - 40} ${tx} ${baseY - 52} Q ${tx} ${baseY - 40} ${tx + 4} ${baseY}" fill="none" stroke="var(--text-muted)" stroke-width="1.5"/><text x="${tx}" y="${baseY - 58}" text-anchor="middle" font-size="10" font-family="var(--font-mono)" fill="var(--text-muted)">TMS</text></g>`;
+        }
+        const palette = ['#2563eb', '#dc2626', '#059669', '#d97706', '#7c3aed', '#0891b2'];
+        let peaksSvg = '';
+        peaks.forEach((pk, idx) => {
+          const color = pk.color || palette[idx % palette.length];
+          const subPeaks = this.getSubPeaks(pk, freqMHz);
+          let d = '';
+          subPeaks.forEach(sp => {
+            const cx = ppmToX(sp.ppm), ph = sp.relH * maxPeakH, halfW = sp.broad ? 14 : (type === '13C' ? 2.2 : 3.6);
+            d += `M ${cx - halfW} ${baseY} C ${cx - halfW * 0.35} ${baseY}, ${cx - halfW * 0.15} ${baseY - ph}, ${cx} ${baseY - ph} C ${cx + halfW * 0.15} ${baseY - ph}, ${cx + halfW * 0.35} ${baseY}, ${cx + halfW} ${baseY} `;
+          });
+          const labelX = ppmToX(pk.ppm), topY = baseY - (pk.height || 0.85) * maxPeakH - 10;
+          peaksSvg += `<g class="nmr-peak-group" data-peak-id="${pk.id || idx}" data-group-id="${pk.groupId || pk.id || idx}" style="color:${color};"><path class="peak-path" d="${d}" fill="none" stroke="${color}" stroke-width="1.9" stroke-linejoin="round"/><text x="${labelX}" y="${Math.max(14, topY)}" text-anchor="middle" font-size="11" font-weight="700" font-family="var(--font-mono)" fill="${color}">${pk.label || ''}</text></g>`;
+        });
+
+        let integralSvg = '';
+        if (type === '1H' && peaks.some(p => p.integral)) {
+          const sorted = [...peaks].filter(p => p.integral).sort((a, b) => a.ppm - b.ppm);
+          const totalInt = sorted.reduce((s, p) => s + p.integral, 0) || 1;
+          let curY = baseY - 14, pathD = `M ${ppmToX(minPpm)} ${curY} `, labelsInt = '';
+          sorted.forEach(p => {
+            const px = ppmToX(p.ppm), stepH = (p.integral / totalInt) * (maxPeakH * 0.72);
+            pathD += `L ${px + 8} ${curY} C ${px + 2} ${curY}, ${px - 2} ${curY - stepH}, ${px - 8} ${curY - stepH} `;
+            labelsInt += `<text x="${px}" y="${curY - stepH - 5}" text-anchor="middle" font-size="10" font-weight="700" font-family="var(--font-mono)" fill="var(--success)">${p.integral}H</text>`;
+            curY -= stepH;
+          });
+          pathD += `L ${ppmToX(maxPpm)} ${curY}`;
+          integralSvg = `<g class="nmr-integral-layer" style="display:none;"><path d="${pathD}" fill="none" stroke="var(--success)" stroke-width="1.7" stroke-dasharray="5 3" opacity="0.9"/>${labelsInt}</g>`;
+        }
+
+        const pillsHtml = peaks.map((pk, idx) => {
+          const color = pk.color || palette[idx % palette.length], gid = pk.groupId || pk.id || idx;
+          return `<button type="button" class="mol-group-pill" data-group-id="${gid}" style="border-right:4px solid ${color};"><bdi>${pk.label || 'Peak ' + (idx + 1)}</bdi><small style="color:var(--text-muted);"><bdi>${pk.ppm} ppm</bdi></small></button>`;
+        }).join('');
+
+        container.innerHTML = `<div class="nmr-widget" id="${uid}">
+          <div class="nmr-toolbar">
+            <div><strong>${config.title || 'طیف NMR'}</strong><span class="badge badge-info" style="margin-right:0.4rem;"><bdi>${freqMHz} MHz</bdi></span></div>
+            <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+              ${integralSvg ? `<button type="button" class="btn btn-sm" data-action="toggle-integral">📈 نمایش پله انتگرال</button>` : ''}
+              <button type="button" class="btn btn-sm" data-action="reset-highlight">↺ نمایش همه پیک‌ها</button>
+            </div>
+          </div>
+          ${config.moleculeSvg ? `<div class="nmr-molecule-box" style="margin-bottom:0.75rem; text-align:center;">${config.moleculeSvg}</div>` : ''}
+          <div style="display:flex; flex-wrap:wrap; gap:0.45rem; margin-bottom:0.75rem;">${pillsHtml}</div>
+          <div class="nmr-svg-wrap"><svg class="nmr-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${config.title || 'طیف NMR'}">
+            <line x1="${padL}" y1="${baseY}" x2="${W - padR}" y2="${baseY}" stroke="var(--text-secondary)" stroke-width="1.5"/>
+            ${ticksSvg}<text x="${W / 2}" y="${H - 4}" text-anchor="middle" font-size="11" font-family="var(--font-mono)" fill="var(--text-muted)">Chemical Shift δ (ppm)</text>
+            ${tmsSvg}${peaksSvg}${integralSvg}
+          </svg></div>
+          <div class="nmr-info-bar" data-role="info"><span>روی هر پیک در طیف یا گروه در مولکول کلیک کنید تا جزئیات آن هایلایت شود.</span></div>
+        </div>`;
+
+        const root = document.getElementById(uid), infoBar = root.querySelector('[data-role="info"]'), peakEls = root.querySelectorAll('.nmr-peak-group');
+        const highlightGroup = (gid) => {
+          peakEls.forEach(el => { const m = el.dataset.groupId === String(gid); el.classList.toggle('highlighted', m); el.classList.toggle('dimmed', !m); });
+          root.querySelectorAll('.mol-group-pill').forEach(p => p.classList.toggle('active', p.dataset.groupId === String(gid)));
+          const pk = peaks.find((p, i) => String(p.groupId || p.id || i) === String(gid));
+          if (pk) infoBar.innerHTML = `<div><strong><bdi>${pk.label}</bdi></strong> — شیفت: <bdi><strong>${pk.ppm} ppm</strong></bdi> | چندگانگی: <bdi><strong>${pk.multiplicity || 's'}</strong></bdi>${pk.jHz ? ` | <bdi>J = ${pk.jHz} Hz</bdi>` : ''}${pk.integral ? ` | انتگرال: <bdi><strong>${pk.integral}H</strong></bdi>` : ''}</div><div style="color:var(--text-secondary);">${pk.note || ''}</div>`;
+        };
+        const resetHighlight = () => {
+          peakEls.forEach(el => el.classList.remove('highlighted', 'dimmed'));
+          root.querySelectorAll('.mol-group-pill').forEach(p => p.classList.remove('active'));
+          infoBar.innerHTML = '<span>روی هر پیک در طیف یا گروه در مولکول کلیک کنید تا جزئیات آن هایلایت شود.</span>';
+        };
+        root.querySelectorAll('[data-group-id]').forEach(el => el.addEventListener('click', () => highlightGroup(el.dataset.groupId)));
+        const rBtn = root.querySelector('[data-action="reset-highlight"]'); if (rBtn) rBtn.addEventListener('click', resetHighlight);
+        const iBtn = root.querySelector('[data-action="toggle-integral"]');
+        if (iBtn) iBtn.addEventListener('click', () => {
+          const layer = root.querySelector('.nmr-integral-layer'), hid = layer.style.display === 'none';
+          layer.style.display = hid ? 'block' : 'none'; iBtn.classList.toggle('btn-success', hid);
+        });
+      }
+    };
+
+    /* =========================================================
+       5. UNIFIED FLASHCARD & QUIZ ENGINES
+       ========================================================= */
+    const FlashcardEngine = {
+      render(container, cards, title = 'مرور هوشمند فلش‌کارت‌ها') {
+        if (!cards || !cards.length) { container.innerHTML = `<div class="card"><p style="margin:0;">فلش‌کارتی موجود نیست.</p></div>`; return; }
+        let idx = 0, filter = 'all';
+        const getFiltered = () => filter === 'all' ? cards : cards.filter(c => (AppState.data.flashcards[c.id] || 'new') === filter);
+        const draw = () => {
+          const list = getFiltered();
+          if (!list.length) {
+            container.innerHTML = `<div class="card"><div class="card-header"><h3 style="margin:0;">🎴 ${title}</h3><button class="btn btn-sm" id="fcResetFilter">نمایش همه (${cards.length})</button></div><p>کارتی در این فیلتر نیست.</p></div>`;
+            container.querySelector('#fcResetFilter').onclick = () => { filter = 'all'; idx = 0; draw(); };
+            return;
+          }
+          if (idx >= list.length) idx = 0;
+          const card = list[idx], st = AppState.data.flashcards[card.id] || 'new';
+          const stLbl = { new: 'جدید', hard: 'سخت', medium: 'متوسط', mastered: 'مسلط' }[st];
+          container.innerHTML = `<div class="card">
+            <div class="card-header"><h3 style="margin:0;">🎴 ${title}</h3>
+              <div style="display:flex; gap:0.35rem; flex-wrap:wrap;">
+                <button class="btn btn-sm ${filter==='all'?'btn-primary':''}" data-f="all">همه (${cards.length})</button>
+                <button class="btn btn-sm ${filter==='hard'?'btn-danger':''}" data-f="hard">سخت</button>
+                <button class="btn btn-sm ${filter==='medium'?'btn-warning':''}" data-f="medium">متوسط</button>
+                <button class="btn btn-sm ${filter==='mastered'?'btn-success':''}" data-f="mastered">مسلط</button>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:0.84rem; color:var(--text-muted);"><span>کارت <bdi>${idx + 1} / ${list.length}</bdi></span><span class="badge badge-info">وضعیت: ${stLbl}</span></div>
+            <div class="flashcard-stage"><div class="flashcard-inner" id="fcInner">
+              <div class="flashcard-face"><span class="badge badge-core" style="margin-bottom:0.75rem;">پرسش (کلیک کنید)</span><div style="font-size:1.05rem; font-weight:700;">${card.front}</div></div>
+              <div class="flashcard-face flashcard-back"><span class="badge badge-success" style="margin-bottom:0.75rem;">پاسخ کلیدی</span><div style="font-size:0.98rem;">${card.back}</div></div>
+            </div></div>
+            <div class="fc-controls">
+              <button class="btn btn-sm" id="fcPrev">→ قبلی</button>
+              <button class="btn btn-sm btn-danger" data-rate="hard">🔴 سخت</button>
+              <button class="btn btn-sm btn-warning" data-rate="medium">🟡 متوسط</button>
+              <button class="btn btn-sm btn-success" data-rate="mastered">🟢 مسلط شدم</button>
+              <button class="btn btn-sm" id="fcNext">بعدی ←</button>
+            </div>
+          </div>`;
+          const inner = container.querySelector('#fcInner'); inner.onclick = () => inner.classList.toggle('flipped');
+          container.querySelector('#fcPrev').onclick = () => { idx = (idx - 1 + list.length) % list.length; draw(); };
+          container.querySelector('#fcNext').onclick = () => { idx = (idx + 1) % list.length; draw(); };
+          container.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { filter = b.dataset.f; idx = 0; draw(); });
+          container.querySelectorAll('[data-rate]').forEach(b => b.onclick = () => { AppState.setFlashcardMastery(card.id, b.dataset.rate); idx = (idx + 1) % list.length; draw(); });
+        };
+        draw();
+      }
+    };
+
+    const QuizEngine = {
+      timerInterval: null,
+      stopTimer() { if (this.timerInterval) { clearInterval(this.timerInterval); this.timerInterval = null; } AppState.setTimedExamLock(false); },
+      start(container, { title, questions, timed = false, durationSec = 600 }) {
+        this.stopTimer();
+        if (!questions || !questions.length) { container.innerHTML = `<div class="card"><p style="margin:0;">سؤالی موجود نیست.</p></div>`; return; }
+        let current = 0, answers = {}, submitted = false, remaining = durationSec;
+        if (timed) {
+          AppState.setTimedExamLock(true);
+          this.timerInterval = setInterval(() => {
+            remaining--; const t = container.querySelector('#quizTimerDisplay');
+            if (t) t.textContent = this.formatTime(remaining);
+            if (remaining <= 0) submitExam();
+          }, 1000);
+        }
+        const submitExam = () => {
+          if (submitted) return; submitted = true; this.stopTimer();
+          const score = questions.reduce((acc, q, i) => acc + (answers[i] === q.answerIndex ? 1 : 0), 0);
+          AppState.recordQuiz({ id: 'q_' + Date.now(), title, score, total: questions.length, timed });
+          renderView();
+        };
+        const renderView = () => {
+          if (submitted) {
+            const score = questions.reduce((acc, q, i) => acc + (answers[i] === q.answerIndex ? 1 : 0), 0);
+            const pct = Math.round((score / questions.length) * 100);
+            container.innerHTML = `<div class="card">
+              <div class="card-header"><h3 style="margin:0;">📊 نتیجه: ${title}</h3><span class="badge ${pct >= 70 ? 'badge-success' : 'badge-danger'}"><bdi>${score} / ${questions.length} (${pct}%)</bdi></span></div>
+              <div style="margin-bottom:1rem;"><button class="btn btn-primary btn-sm" id="retryQuizBtn">↻ آزمون مجدد</button></div>
+              ${questions.map((q, i) => `<div class="callout ${answers[i] === q.answerIndex ? 'success' : 'warning'}"><div style="font-weight:700; margin-bottom:0.4rem;">سؤال ${i + 1}: ${q.question}</div><div style="font-size:0.86rem;">پاسخ شما: <strong>${answers[i] !== undefined ? q.options[answers[i]] : 'بی‌پاسخ'}</strong> | صحیح: <strong>${q.options[q.answerIndex]}</strong></div>${q.explanation ? `<div style="margin-top:0.4rem; font-size:0.86rem;">💡 ${q.explanation}</div>` : ''}</div>`).join('')}
+            </div>`;
+            container.querySelector('#retryQuizBtn').onclick = () => this.start(container, { title, questions, timed, durationSec });
+            return;
+          }
+          const q = questions[current];
+          container.innerHTML = `<div class="card">
+            <div class="card-header"><div><h3 style="margin:0;">📝 ${title}</h3><small style="color:var(--text-muted);">سؤال <bdi>${current + 1}</bdi> از <bdi>${questions.length}</bdi></small></div>${timed ? `<div class="quiz-timer" id="quizTimerDisplay">${this.formatTime(remaining)}</div>` : ''}</div>
+            <div style="font-size:1rem; font-weight:700; margin-bottom:1rem;">${q.question}</div>
+            ${q.spectrumConfig ? `<div id="quizSpectrumMount"></div>` : ''}
+            <div>${q.options.map((opt, idx) => `<button type="button" class="quiz-option ${answers[current] === idx ? 'selected' : ''}" data-opt="${idx}"><span class="badge badge-info"><bdi>${idx + 1}</bdi></span><span>${opt}</span></button>`).join('')}</div>
+            <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.6rem; margin-top:1rem;">
+              <button class="btn btn-sm" id="qPrev" ${current === 0 ? 'disabled' : ''}>→ قبلی</button>
+              <div>${current < questions.length - 1 ? `<button class="btn btn-primary btn-sm" id="qNext">بعدی ←</button>` : `<button class="btn btn-success btn-sm" id="qFinish">✔ ثبت نهایی</button>`}</div>
+            </div>
+          </div>`;
+          if (q.spectrumConfig) NMRSpectrumEngine.render(container.querySelector('#quizSpectrumMount'), q.spectrumConfig);
+          container.querySelectorAll('[data-opt]').forEach(b => b.onclick = () => { answers[current] = Number(b.dataset.opt); renderView(); });
+          const prev = container.querySelector('#qPrev'); if (prev) prev.onclick = () => { current--; renderView(); };
+          const next = container.querySelector('#qNext'); if (next) next.onclick = () => { current++; renderView(); };
+          const fin = container.querySelector('#qFinish'); if (fin) fin.onclick = submitExam;
+        };
+        renderView();
+      },
+      formatTime(sec) { return `${String(Math.floor(Math.max(0, sec) / 60)).padStart(2, '0')}:${String(Math.max(0, sec) % 60).padStart(2, '0')}`; }
+    };
+
+    /* =========================================================
+       6. GLOBAL SEARCH & ROUTER & UI
+       ========================================================= */
+    const SearchEngine = {
+      open() { document.getElementById('searchModalBackdrop').classList.add('open'); const i = document.getElementById('globalSearchInput'); i.value = ''; i.focus(); this.run(''); },
+      close() { document.getElementById('searchModalBackdrop').classList.remove('open'); },
+      buildIndex() {
+        const items = [];
+        COURSE_DATA.sessions.forEach(s => {
+          items.push({ type: 'جلسه', title: `جلسه ${s.number}: ${s.title}`, text: s.summary || '', route: `session-${s.number}` });
+          (s.sections || []).forEach(sec => items.push({ type: `جلسه ${s.number}`, title: sec.title, text: (sec.html || '').replace(/<[^>]+>/g, ' '), route: `session-${s.number}` }));
+          (s.flashcards || []).forEach(fc => items.push({ type: `فلش‌کارت جلسه ${s.number}`, title: fc.front, text: fc.back, route: `session-${s.number}` }));
+        });
+        COURSE_DATA.simulators.forEach(sim => items.push({ type: 'شبیه‌ساز', title: sim.title, text: sim.description || '', route: 'lab' }));
+        (COURSE_DATA.examBank.historical || []).forEach(q => items.push({ type: 'سؤال تاریخی', title: `${q.code}: ${q.question}`, text: q.explanation || '', route: 'exams' }));
+        (COURSE_DATA.examBank.examples || []).forEach(ex => items.push({ type: 'مثال استاد', title: `${ex.code}: ${ex.title}`, text: ex.summary || '', route: `session-${ex.session}` }));
+        return items;
+      },
+      run(query) {
+        const resEl = document.getElementById('globalSearchResults'), q = (query || '').trim().toLowerCase(), idx = this.buildIndex();
+        const hits = q ? idx.filter(it => (it.title + ' ' + it.text).toLowerCase().includes(q)).slice(0, 20) : idx.slice(0, 12);
+        resEl.innerHTML = hits.length
+          ? hits.map(h => `<button class="search-hit" onclick="SearchEngine.close(); Router.go('${h.route}')"><span class="search-hit-meta">${h.type}</span><strong>${h.title}</strong></button>`).join('')
+          : `<p style="padding:1rem; text-align:center;">نتیجه‌ای برای «${query}» پیدا نشد.</p>`;
+      }
+    };
+
+    const Router = {
+      currentRoute: 'home',
+      go(route) { QuizEngine.stopTimer(); this.currentRoute = route; UI.toggleSidebar(false); this.renderSidebar(); this.renderCurrent(); window.scrollTo({ top: 0, behavior: 'smooth' }); },
+      renderSidebar() {
+        const nav = document.getElementById('sidebarNav');
+        let html = `<div class="nav-group-label">مسیر اصلی</div>
+          <button class="nav-item ${this.currentRoute==='home'?'active':''}" onclick="Router.go('home')"><span class="nav-item-main"><span>🏠</span><span class="nav-item-title">صفحه خانه و نقشه دوره</span></span></button>
+          <div class="nav-group-label">جلسات درسنامه (۱ تا ۷)</div>`;
+        for (let i = 1; i <= 7; i++) {
+          const s = COURSE_DATA.sessions.find(x => x.number === i), done = !!AppState.data.completedSessions[i];
+          html += `<button class="nav-item ${this.currentRoute===`session-${i}`?'active':''} ${done?'done':''}" onclick="Router.go('session-${i}')"><span class="nav-item-main"><span>📘</span><span class="nav-item-title">جلسه ${i}: ${s ? s.shortTitle : ''}</span></span><span class="nav-badge">${done ? '✔' : i}</span></button>`;
+        }
+        html += `<div class="nav-group-label">ابزارهای تعاملی و ارزیابی</div>
+          <button class="nav-item ${this.currentRoute==='lab'?'active':''}" onclick="Router.go('lab')"><span class="nav-item-main"><span>🧪</span><span class="nav-item-title">آزمایشگاه شبیه‌سازها</span></span><span class="nav-badge">${COURSE_DATA.simulators.length}</span></button>
+          <button class="nav-item ${this.currentRoute==='exams'?'active':''}" onclick="Router.go('exams')"><span class="nav-item-main"><span>🎯</span><span class="nav-item-title">بانک جامع آزمون</span></span></button>
+          <button class="nav-item ${this.currentRoute==='dashboard'?'active':''}" onclick="Router.go('dashboard')"><span class="nav-item-main"><span>📊</span><span class="nav-item-title">داشبورد پیشرفت</span></span></button>`;
+        nav.innerHTML = html;
+      },
+      renderCurrent() {
+        const v = document.getElementById('appView');
+        if (this.currentRoute === 'home') return this.renderHome(v);
+        if (this.currentRoute === 'lab') return this.renderLab(v);
+        if (this.currentRoute === 'exams') return this.renderExams(v);
+        if (this.currentRoute === 'dashboard') return this.renderDashboard(v);
+        if (this.currentRoute.startsWith('session-')) return this.renderSession(v, Number(this.currentRoute.split('-')[1]));
+      },
+      renderHome(view) {
+        view.innerHTML = `<div class="card"><span class="badge badge-info" style="margin-bottom:0.6rem;">نسخه یکپارچه آفلاین (SPA)</span><h1>${COURSE_DATA.meta.title}</h1><p>${COURSE_DATA.meta.subtitle}</p>
+          <div style="display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:1rem;">
+            <button class="btn btn-primary" onclick="Router.go('session-1')">شروع مطالعه از جلسه ۱ ←</button>
+            <button class="btn" onclick="Router.go('lab')">🧪 آزمایشگاه (${COURSE_DATA.simulators.length} شبیه‌ساز)</button>
+            <button class="btn" onclick="Router.go('exams')">🎯 بانک جامع آزمون</button>
+          </div></div>
+          <h2>نقشه مسیر ۷ جلسه</h2><div class="grid-auto">
+          ${COURSE_DATA.sessions.map(s => {
+            const done = !!AppState.data.completedSessions[s.number];
+            return `<div class="card" style="margin-bottom:0; display:flex; flex-direction:column; justify-content:space-between;"><div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;"><span class="badge ${done?'badge-success':'badge-info'}">جلسه ${s.number}</span>${done?'<span class="badge badge-success">✔ مطالعه‌شده</span>':''}</div>
+              <h3>${s.title}</h3><p style="font-size:0.85rem;">${s.summary}</p></div>
+              <button class="btn btn-sm" onclick="Router.go('session-${s.number}')">ورود به جلسه ←</button></div>`;
+          }).join('')}</div>`;
+      },
+      renderSession(view, num) {
+        const s = COURSE_DATA.sessions.find(x => x.number === num); if (!s) return;
+        const isDone = !!AppState.data.completedSessions[num];
+        view.innerHTML = `<div class="card"><div class="card-header"><div><span class="badge badge-info">جلسه ${s.number}</span><h1 style="margin-top:0.35rem;">${s.title}</h1></div>
+          <button class="btn ${isDone?'btn-success':'btn-primary'} btn-sm" onclick="AppState.toggleSessionDone(${num}); Router.renderCurrent();">${isDone ? '✔ تکمیل شده' : 'ثبت به‌عنوان مطالعه‌شده'}</button></div><p>${s.summary}</p></div>
+          <div class="tabs-bar" id="sessionTabs">
+            <button class="tab-btn active" data-tab="lesson">📖 درسنامه</button>
+            <button class="tab-btn" data-tab="flashcards">🎴 فلش‌کارت‌ها (${(s.flashcards||[]).length})</button>
+            <button class="tab-btn" data-tab="quiz">📝 آزمونک جلسه (${(s.quiz||[]).length})</button>
+          </div><div id="sessionTabBody"></div>`;
+        const body = document.getElementById('sessionTabBody');
+        const renderTab = (tab) => {
+          document.querySelectorAll('#sessionTabs .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+          if (tab === 'lesson') {
+            body.innerHTML = (s.sections || []).map((sec, i) => `<section class="card"><div class="card-header"><h2 style="margin:0;">${sec.title}</h2>${sec.tag?`<span class="badge ${sec.tag==='Exam Core'?'badge-core':'badge-deep'}">${sec.tag}</span>`:''}</div><div class="lesson-html">${sec.html || ''}</div>${sec.spectrumConfig?`<div class="session-spectrum-mount" data-spec-idx="${i}"></div>`:''}</section>`).join('');
+            body.querySelectorAll('.session-spectrum-mount').forEach(el => NMRSpectrumEngine.render(el, s.sections[Number(el.dataset.specIdx)].spectrumConfig));
+            UI.bindDeepLearningAccordions(body);
+          } else if (tab === 'flashcards') FlashcardEngine.render(body, s.flashcards || [], `فلش‌کارت‌های جلسه ${num}`);
+          else QuizEngine.start(body, { title: `آزمونک جلسه ${num}`, questions: s.quiz || [], timed: false });
+        };
+        document.querySelectorAll('#sessionTabs .tab-btn').forEach(b => b.onclick = () => renderTab(b.dataset.tab));
+        renderTab('lesson');
+      },
+      renderLab(view) {
+        view.innerHTML = `<div class="card"><h1>🧪 آزمایشگاه شبیه‌سازهای تعاملی NMR (${COURSE_DATA.simulators.length} ابزار)</h1><p>تمام شبیه‌سازهای محاسباتی، طیف‌نمایی و حل ساختار دوره به‌صورت آفلاین در این بخش یکپارچه شده‌اند.</p></div><div id="labSimulatorsMount" class="grid-2"></div>`;
+        const simMount = document.getElementById('labSimulatorsMount');
+        simMount.innerHTML = COURSE_DATA.simulators.map(sim => `<div class="card" style="margin-bottom:0;"><h3>${sim.title}</h3><p style="font-size:0.84rem;">${sim.description || ''}</p><div id="sim_mount_${sim.id}"></div></div>`).join('');
+        COURSE_DATA.simulators.forEach(sim => { const t = document.getElementById(`sim_mount_${sim.id}`); if (t && typeof sim.mount === 'function') sim.mount(t); });
+      },
+      renderExams(view) {},
+      renderDashboard(view) {
+        const done = Object.keys(AppState.data.completedSessions).length;
+        const mastered = Object.values(AppState.data.flashcards).filter(v => v === 'mastered').length;
+        const avg = AppState.data.quizHistory.length ? Math.round(AppState.data.quizHistory.reduce((s, q) => s + (q.score / q.total) * 100, 0) / AppState.data.quizHistory.length) : 0;
+        view.innerHTML = `<div class="card"><div class="card-header"><h1 style="margin:0;">📊 داشبورد پیشرفت یکپارچه</h1>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button class="btn btn-sm btn-primary" onclick="AppState.exportJSON()">⬇ خروجی JSON</button>
+            <label class="btn btn-sm" style="margin:0;">⬆ ورودی JSON<input type="file" accept=".json" style="display:none;" onchange="if(this.files[0]) AppState.importJSON(this.files[0])"/></label>
+            <button class="btn btn-sm btn-danger" onclick="AppState.resetAll()">🗑 بازنشانی</button>
+          </div></div>
+          <div class="grid-3">
+            <div class="callout"><div style="font-size:0.84rem;">جلسات تکمیل‌شده</div><div style="font-size:1.6rem; font-weight:800;"><bdi>${done} / 7</bdi></div></div>
+            <div class="callout success"><div style="font-size:0.84rem;">فلش‌کارت‌های مسلط</div><div style="font-size:1.6rem; font-weight:800;"><bdi>${mastered}</bdi></div></div>
+            <div class="callout exam-core"><div style="font-size:0.84rem;">میانگین نمرات آزمون</div><div style="font-size:1.6rem; font-weight:800;"><bdi>${avg}%</bdi></div></div>
+          </div></div>
+          <div class="card"><h3>تاریخچه آزمون‌های اخیر</h3>${AppState.data.quizHistory.length ? `<div class="table-wrap"><table><thead><tr><th>عنوان آزمون</th><th>نوع</th><th>نمره</th><th>تاریخ</th></tr></thead><tbody>${AppState.data.quizHistory.map(q => `<tr><td>${q.title}</td><td>${q.timed?'⏱ زمان‌دار':'عادی'}</td><td><bdi><strong>${q.score}/${q.total}</strong></bdi></td><td>${q.date}</td></tr>`).join('')}</tbody></table></div>` : `<p style="margin:0;">هنوز آزمونی ثبت نشده است.</p>`}</div>`;
+      }
+    };
+
+    const UI = {
+      toggleSidebar(open) { document.getElementById('sidebar').classList.toggle('open', open); document.getElementById('sidebarBackdrop').classList.toggle('open', open); },
+      toast(msg) { const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show'); clearTimeout(this._t); this._t = setTimeout(() => el.classList.remove('show'), 2500); },
+      updateGlobalProgress() {
+        const pct = Math.round((Object.keys(AppState.data.completedSessions).length / 7) * 100);
+        document.getElementById('sidebarProgressPct').textContent = pct + '%';
+        document.getElementById('sidebarProgressFill').style.width = pct + '%';
+      },
+      bindDeepLearningAccordions(root) {
+        root.querySelectorAll('.deep-learning').forEach(box => {
+          if (box.dataset.bound) return; box.dataset.bound = '1';
+          let h = box.querySelector('.deep-learning-header');
+          if (!h) {
+            const title = box.dataset.title || 'تحلیل عمیق (پاویا)';
+            box.innerHTML = `<button type="button" class="deep-learning-header"><span>🔬 ${title}</span><span class="chevron">▾</span></button><div class="deep-learning-body">${box.innerHTML}</div>`;
+            h = box.querySelector('.deep-learning-header');
+          }
+          h.addEventListener('click', () => { if (document.body.classList.contains('exam-mode')) box.classList.toggle('dl-open'); else box.classList.toggle('dl-closed'); });
+        });
+      }
+    };
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); SearchEngine.open(); }
+      else if (e.key === 'Escape') { SearchEngine.close(); CheatSheet.toggle(false); UI.toggleSidebar(false); }
+    });
+
+    /* =========================================================
+       MODULE 1: SESSIONS 1 & 2 + SIMULATORS 1–5
+       ========================================================= */
+    (function () {
+      registerSession({
+        id: 's1', number: 1, shortTitle: 'مبانی فیزیکی و استانداردها',
+        title: 'جلسه ۱: مبانی فیزیکی تشدید مغناطیسی هسته‌ای و استانداردهای مرجع',
+        summary: 'مقایسه UV/IR/NMR، اسپین هسته‌ای (I)، شکافت ترازهای زیمان (2I+1)، توزیع بولتزمان و جمعیت مازاد، فرکانس لارمور، اشباع و زمان‌های آسایش (T₁ و T₂)، ساختمان مگنت ابررسانا و استانداردهای مرجع TMS، TSP و DSS به همراه تصحیح خطاهای جزوه.',
+        sections: [
+          {
+            title: '۰۱. جایگاه طیف‌سنجی NMR و مقایسه جامع آن با روش‌های UV و IR', tag: 'Exam Core',
+            html: `<p>عبارت <bdi>NMR</bdi> مخفف <bdi>Nuclear Magnetic Resonance</bdi> به معنای <strong>تشدید مغناطیسی هسته‌ای</strong> است. در <strong>UV-Vis</strong> انتقال الکترون‌ها میان اوربیتال‌های مولکولی (<bdi>π→π*, n→π*</bdi>)، در <strong>IR</strong> ارتعاش پیوندها به شرط تغییر گشتاور دوقطبی و در <strong>NMR</strong> اسپین هسته اتم‌ها در میدان مغناطیسی بررسی می‌شود.</p>
+              <div class="table-wrap"><table><thead><tr><th>روش</th><th>بخش مورد مطالعه</th><th>ناحیه تابش</th><th>شرط مشاهده جذب</th><th>اطلاعات ساختاری</th></tr></thead><tbody>
+                <tr><td><strong>UV-Vis</strong></td><td>الکترون‌های ظرفیت</td><td><bdi>190–800 nm</bdi></td><td>کروموفور / سل کوارتز در UV</td><td>پیوندهای مزدوج و حلقه‌های آروماتیک</td></tr>
+                <tr><td><strong>IR</strong></td><td>پیوندها و ارتعاش</td><td>مادون قرمز</td><td>تغییر گشتاور دوقطبی</td><td>شناسایی دقیق گروه‌های عاملی</td></tr>
+                <tr><td><strong>NMR</strong></td><td>هسته اتم‌ها (<bdi>¹H, ¹³C</bdi>)</td><td>امواج رادیویی (<bdi>MHz</bdi>)</td><td>اسپین غیرصفر (<bdi>I ≠ 0</bdi>)</td><td>تعداد، محیط الکترونی و همسایگی اتم‌ها</td></tr>
+              </tbody></table></div>`
+          },
+          {
+            title: '۰۲. اسپین هسته‌ای (I) و جدول هسته‌های فعال و غیرفعال', tag: 'Exam Core',
+            html: `<p>تنها هسته‌هایی در NMR فعال‌اند که <strong><bdi>I ≠ 0</bdi></strong> داشته باشند: اگر عدد اتمی (<bdi>Z</bdi>) و عدد جرمی (<bdi>A</bdi>) <strong>هر دو زوج باشند</strong> ← <bdi>I = 0</bdi> و غیرفعال (<bdi>¹²C, ¹⁶O, ³²S</bdi>). اگر یکی یا هر دو فرد باشند ← فعال در NMR.</p>
+              <div class="deep-learning" data-title="تحلیل عمیق (پاویا ۵.۲): منشأ کوانتومی عدد اسپین I"><p>نوکلئون‌ها نیز تراز لایه‌ای دارند؛ در هسته‌های زوج–زوج اسپین‌ها جفت و خنثی می‌شوند (<bdi>I = 0</bdi>). مقادیر <bdi>¹H, ¹³C, ¹⁹F, ³¹P (= 1/2)</bdi> و <bdi>¹⁴N, ²H (= 1)</bdi> باید حفظ باشند.</p></div>
+              <div class="table-wrap"><table><thead><tr><th>هسته</th><th>Z</th><th>A</th><th>اسپین I</th><th>تراز (2I+1)</th><th>فراوانی</th><th>وضعیت</th></tr></thead><tbody>
+                <tr><td><strong><bdi>¹H</bdi></strong></td><td>1</td><td>1</td><td><bdi>1/2</bdi></td><td>2</td><td><bdi>99.98%</bdi></td><td><span class="badge badge-success">فعال · مرجع</span></td></tr>
+                <tr><td><strong><bdi>¹³C</bdi></strong></td><td>6</td><td>13</td><td><bdi>1/2</bdi></td><td>2</td><td><bdi>1.10%</bdi></td><td><span class="badge badge-success">فعال</span></td></tr>
+                <tr><td><strong><bdi>¹⁹F / ³¹P</bdi></strong></td><td>9 / 15</td><td>19 / 31</td><td><bdi>1/2</bdi></td><td>2</td><td><bdi>100%</bdi></td><td><span class="badge badge-success">فعال</span></td></tr>
+                <tr><td><strong><bdi>²H / ¹⁴N</bdi></strong></td><td>1 / 7</td><td>2 / 14</td><td><bdi>1</bdi></td><td>3</td><td><bdi>0.02% / 99.6%</bdi></td><td><span class="badge badge-success">فعال</span></td></tr>
+                <tr><td><strong><bdi>¹⁷O</bdi></strong></td><td>8</td><td>17</td><td><bdi>5/2</bdi></td><td>6</td><td><bdi>0.04%</bdi></td><td><span class="badge badge-success">فعال</span></td></tr>
+                <tr><td><strong><bdi>¹²C / ¹⁶O / ³²S</bdi></strong></td><td>زوج</td><td>زوج</td><td><bdi>0</bdi></td><td>1</td><td><bdi>&gt;95%</bdi></td><td><span class="badge badge-danger">غیرفعال (نامرئی)</span></td></tr>
+              </tbody></table></div>`
+          },
+          {
+            title: '۰۳. ترازهای انرژی زیمان، بولتزمان و فرکانس لارمور', tag: 'Exam Core',
+            html: `<div class="formula-box">States = 2I + 1 &nbsp;|&nbsp; ΔE = (h·γ·B₀)/(2π) = hν &nbsp;|&nbsp; N_β / N_α = exp(−ΔE / kT) &nbsp;|&nbsp; ν = (γ/2π)·B₀</div>
+              <p>اختلاف جمعیت دو تراز (<bdi>N_α − N_β</bdi>) <strong>جمعیت مازاد</strong> و منشأ کل سیگنال است. برای پروتون <bdi>γ/2π = 42.58 MHz/T</bdi> و برای <bdi>¹³C</bdi> برابر <bdi>10.71 MHz/T</bdi> (یک‌چهارم پروتون) است. در <bdi>1.41 T</bdi> فرکانس پروتون <bdi>60 MHz</bdi> و در <bdi>7.05 T</bdi> برابر <bdi>300 MHz</bdi> است.</p>
+              <div class="grid-2">
+                <div class="nmr-svg-wrap"><svg viewBox="0 0 420 220" style="width:100%; display:block;"><line x1="50" y1="195" x2="390" y2="195" stroke="var(--text-primary)" stroke-width="1.8"/><line x1="50" y1="195" x2="50" y2="20" stroke="var(--text-primary)" stroke-width="1.8"/><circle cx="50" cy="115" r="4" fill="var(--accent)"/><line x1="50" y1="115" x2="365" y2="40" stroke="var(--danger)" stroke-width="2.8"/><line x1="50" y1="115" x2="365" y2="180" stroke="var(--accent)" stroke-width="2.8"/><text x="370" y="44" fill="var(--danger)" font-size="11" font-weight="700">β (-1/2)</text><text x="370" y="184" fill="var(--accent)" font-size="11" font-weight="700">α (+1/2)</text><line x1="295" y1="58" x2="295" y2="165" stroke="var(--success)" stroke-width="2"/><text x="295" y="114" fill="var(--exam-accent)" font-size="11" font-weight="700" text-anchor="middle">ΔE ∝ B₀</text><text x="220" y="214" fill="var(--text-muted)" font-size="11" text-anchor="middle">شکافت ترازهای زیمان با افزایش B₀</text></svg></div>
+                <div class="nmr-svg-wrap"><svg viewBox="0 0 380 220" style="width:100%; display:block;"><line x1="190" y1="205" x2="190" y2="20" stroke="var(--text-primary)" stroke-width="2"/><polygon points="190,14 185,25 195,25" fill="var(--text-primary)"/><text x="202" y="26" fill="var(--text-primary)" font-size="12" font-weight="700">B₀</text><ellipse cx="190" cy="75" rx="75" ry="20" fill="none" stroke="var(--success)" stroke-width="2.2"/><line x1="190" y1="175" x2="245" y2="88" stroke="var(--accent)" stroke-width="3"/><circle cx="190" cy="175" r="9" fill="var(--exam-soft)" stroke="var(--exam-accent)"/><path d="M 30 135 Q 42 118, 54 135 T 78 135 T 102 135" fill="none" stroke="var(--danger)" stroke-width="2.2"/><text x="30" y="112" fill="var(--danger)" font-size="11" font-weight="700">موج RF</text><text x="190" y="214" fill="var(--text-muted)" font-size="11" text-anchor="middle">مخروط تقدیمی لارمور (ν_RF = ν_L)</text></svg></div>
+              </div>`
+          },
+          {
+            title: '۰۴. اشباع، آسایش (T₁ و T₂)، مگنت ابررسانا و استانداردهای TMS/TSP/DSS', tag: 'Exam Core',
+            html: `<p><strong>اشباع (Saturation):</strong> برابری جمعیت دو تراز (<bdi>N_α = N_β</bdi>) و صفر شدن سیگنال. <strong>آسایش اسپین–شبکه (<bdi>T₁</bdi>):</strong> بازیابی تعادل طولی با انتقال انرژی به شبکه. <strong>آسایش اسپین–اسپین (<bdi>T₂</bdi>):</strong> ناهماهنگی عرضی و تعیین‌کننده پهنای پیک. <strong>هشدار:</strong> اتمام هلیوم مایع (<bdi>≈ −270 °C</bdi>) در سیم‌پیچ ابررسانا (دارای سپر نیتروژن مایع <bdi>−196 °C</bdi>) موجب <strong>Quench</strong> (افت ناگهانی میدان) می‌شود، نه اشباع! کویل‌های <strong>Shimming</strong> و چرخش <strong>Spinner</strong> پیک‌ها را باریک می‌کنند.</p>
+              <div class="nmr-svg-wrap"><svg viewBox="0 0 680 185" style="width:100%; display:block;"><rect x="10" y="15" width="205" height="155" rx="8" fill="var(--bg-surface)" stroke="var(--border-color)"/><rect x="26" y="30" width="173" height="125" rx="6" fill="var(--accent-soft)" stroke="var(--accent)"/><rect x="46" y="50" width="133" height="90" rx="5" fill="var(--exam-soft)" stroke="var(--exam-accent)"/><rect x="94" y="10" width="36" height="160" fill="var(--bg-surface)" stroke="var(--text-primary)"/><rect x="106" y="45" width="12" height="95" rx="3" fill="var(--accent)"/><text x="112" y="180" text-anchor="middle" font-size="10.5" fill="var(--text-muted)">مگنت ابررسانا (LN₂ / LHe / اسپینر)</text>
+              <rect x="235" y="15" width="140" height="155" rx="8" fill="var(--bg-surface)" stroke="var(--border-color)"/><text x="305" y="38" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent)">TMS (حلال آلی)</text><text x="305" y="95" text-anchor="middle" font-size="13" font-weight="700" font-family="var(--font-mono)" fill="var(--text-primary)">Si(CH₃)₄</text><text x="305" y="152" text-anchor="middle" font-size="10" fill="var(--text-muted)">12H · bp 26.5°C</text>
+              <rect x="390" y="15" width="280" height="155" rx="8" fill="var(--bg-surface)" stroke="var(--border-color)"/><text x="530" y="38" text-anchor="middle" font-size="12" font-weight="700" fill="var(--success)">استانداردهای محلول در D₂O</text><text x="530" y="82" text-anchor="middle" font-size="11.5" font-weight="700" font-family="var(--font-mono)" fill="var(--text-primary)">TSP: (CH₃)₃Si-CD₂CD₂-COONa</text><text x="530" y="122" text-anchor="middle" font-size="11.5" font-weight="700" font-family="var(--font-mono)" fill="var(--text-primary)">DSS: (CH₃)₃Si-(CH₂)₃-SO₃Na</text></svg></div>
+              <div class="callout warning"><strong>تصحیح علمی خطاهای جزوه دست‌نویس:</strong> (۱) در دستگاه <strong>NMR 500</strong> فرکانس پروتون دقیقاً <strong><bdi>500 MHz</bdi></strong> (و <bdi>¹³C ≈ 125.7 MHz</bdi>) است؛ عدد <strong>«۱۶۶»</strong> در جزوه قدیمی خطای ثبت بوده است. (۲) میدان متناظر با <bdi>300 MHz</bdi> برابر <strong><bdi>7.05 T</bdi></strong> است، نه ۴ تسلا!</div>`
+          }
+        ],
+        flashcards: [
+          { id: 's1_fc1', front: 'شرط فعال‌بودن یک هسته در NMR بر اساس Z و A چیست؟', back: 'اسپین I ≠ 0 باشد. اگر هم Z و هم A زوج باشند (¹²C، ¹⁶O، ³²S)، I = 0 و غیرفعال است.' },
+          { id: 's1_fc2', front: 'تعداد ترازهای زیمان برای هسته با اسپین I چیست؟', back: '2I + 1 تراز از −I تا +I با گام ۱.' },
+          { id: 's1_fc3', front: 'رابطه فرکانس لارمور و ثابت γ/2π برای پروتون و کربن-۱۳؟', back: 'ν = (γ/2π)·B₀ | برای ¹H برابر 42.58 و برای ¹³C برابر 10.71 MHz/T (یک‌چهارم پروتون).' },
+          { id: 's1_fc4', front: 'جمعیت مازاد چیست و افزایش B₀ چه اثری بر آن دارد؟', back: 'اختلاف N_α − N_β در توزیع بولتزمان؛ افزایش B₀ باعث رشد ΔE، افزایش جمعیت مازاد و حساسیت بیشتر می‌شود.' },
+          { id: 's1_fc5', front: 'تفاوت Relaxation (T₁/T₂) با Quench مگنت چیست؟', back: 'Relaxation بازگشت اسپین‌های نمونه به تعادل است (T₁ طولی و T₂ عرضی/پهنای پیک)؛ Quench افت ناگهانی میدان مگنت بر اثر اتمام هلیوم مایع است.' },
+          { id: 's1_fc6', front: 'چرا در حلال D₂O از TMS استفاده نمی‌شود و جایگزین چیست؟', back: 'TMS در آب نامحلول است؛ در D₂O از نمک‌های محلول در آب TSP و DSS استفاده می‌شود.' }
+        ],
+        quiz: [
+          { question: '[Q-01] کدام هسته‌ها دارای I = 0 و در NMR غیرفعال‌اند؟', options: ['¹³C و ¹⁴N', '¹²C و ¹⁶O', '²H و ¹⁹F', '¹⁷O و ³¹P'], answerIndex: 1, explanation: 'هسته‌های زوج–زوج (¹²C و ¹⁶O) اسپین صفر دارند.' },
+          { question: '[Q-02] برای I = 3/2 چند تراز زیمان تشکیل می‌شود و با ۵ برابر شدن میدان از 1.41 T به 7.05 T فرکانس پروتون از 60 MHz به چند می‌رسد؟', options: ['۳ تراز؛ 60 MHz', '۴ تراز؛ 300 MHz', '۴ تراز؛ 125.7 MHz', '۲ تراز؛ 30 MHz'], answerIndex: 1, explanation: '2(3/2)+1 = 4 تراز و فرکانس ۵ برابر شده به 300 MHz می‌رسد.' },
+          { question: 'در دستگاه «NMR 500»، فرکانس پروتون و کربن-۱۳ به ترتیب کدام است؟ (اصلاح خطای ۱۶۶ جزوه)', options: ['166 و 500 MHz', '500 و حدود 125.7 MHz', '500 و 166 MHz', '300 و 75 MHz'], answerIndex: 1, explanation: 'نام دستگاه بیانگر فرکانس پروتون (500 MHz) و ¹³C حدود یک‌چهارم آن (125.7 MHz) است.' },
+          { question: 'نقش نیتروژن مایع (−196 °C) و اسپینر (Spinner) به ترتیب چیست؟', options: ['استاندارد داخلی و تولید RF', 'سپر حرارتی کاهش تبخیر هلیوم و میانگین‌گیری ناهمگنی میدان افقی برای تیز کردن پیک‌ها', 'ذوب سیم‌پیچ و افزایش فشار', 'حذف اکسیژن محلول'], answerIndex: 1, explanation: 'نیتروژن مایع سپر حرارتی هلیوم است و اسپینر ناهمگنی میدان افقی را میانگین‌گیری می‌کند.' },
+          { question: 'کدام گزینه جزو مزایای TMS نیست؟', options: ['۱۲ پروتون هم‌ارز', 'الکترونگاتیوی پایین سیلیسیم', 'نقطه جوش بسیار بالا (250 °C)', 'بی‌اثر بودن شیمیایی'], answerIndex: 2, explanation: 'مزیت TMS نقطه جوش بسیار پایین آن (26.5 °C) برای تبخیر و بازیابی آسان نمونه است.' }
+        ]
+      });
+
+      registerSession({
+        id: 's2', number: 2, shortTitle: 'شیفت شیمیایی، آنیزوتروپی و FT-NMR',
+        title: 'جلسه ۲: جابه‌جایی شیمیایی (δ)، شیلدینگ، آنیزوتروپی و ابزارشناسی FT-NMR',
+        summary: 'مقیاس مستقل از میدان ppm، شیلدینگ در حالت میدان ثابت و فرکانس ثابت، سری مشتقات متیل (با تأکید بر هیدروکسیل بودن CH₃OH)، متیل پروپانوآت، مخروط‌های آنیزوتروپی (بنزن، آلکن، کربونیل، شیلدشدن آلکین)، FT-NMR/FID و حلال‌های دوتره با قفل دوتریوم.',
+        sections: [
+          {
+            title: '۰۱. مقیاس مستقل از میدان (ppm)، شیلدینگ و سری مشتقات متیل', tag: 'Exam Core',
+            html: `<div class="formula-box">δ (ppm) = Δν (Hz) / ν₀ (MHz) &nbsp;|&nbsp; B_eff = B₀ − B_ind = B₀(1 − σ)</div>
+              <p>در <strong>میدان ثابت</strong>، پروتون دشیلدشده فرکانس لارمور بالاتری دارد. در <strong>فرکانس ثابت</strong>، پروتون دشیلدشده (سمت چپ، مثل <bdi>16 ppm</bdi>) به <strong>میدان خارجی پایین‌تر (Low Field)</strong> نیاز دارد. ترتیب نزولی سری مشتقات متیل: <strong><bdi>CH₃F (4.26) &gt; CH₃OH (~3.40) &gt; CH₃Cl (3.05) &gt; CH₃Br (2.68) &gt; CH₃I (2.16) &gt; TMS (0.00)</bdi></strong>.</p>
+              <div class="callout warning"><strong>تذکر علمی مهم درباره <bdi>CH₃OH</bdi>:</strong> متانول دارای گروه عاملی <strong>هیدروکسیل (<bdi>–OH</bdi>)</strong> است و نباید کل این سری را هالوژن نامید! در <strong>متیل پروپانوآت (<bdi>CH₃CH₂COOCH₃</bdi>)</strong> نیز ترتیب <bdi>–OCH₃ (~3.67) &gt; –CH₂CO (~2.32) &gt; CH₃ (~1.14 ppm)</bdi> برقرار است.</div>`
+          },
+          {
+            title: '۰۲. آنیزوتروپی مغناطیسی پیوندهای پای (بنزن، آلکن، کربونیل و آلکین)', tag: 'Exam Core',
+            html: `<ul>
+                <li><strong>پروتون آلکینی (<bdi>–C≡C–H</bdi>، <bdi>2.0–3.0 ppm</bdi>):</strong> در راستای محور <bdi>180°</bdi> قرار دارد که میدان القایی خلاف <bdi>B₀</bdi> است ← <strong>شیلد شده!</strong></li>
+                <li><strong>پروتون آلکنی (<bdi>5.0–6.0 ppm</bdi>)، آروماتیک (<bdi>7.0–8.0 ppm</bdi>) و آلدهیدی (<bdi>9.0–10.0 ppm</bdi>):</strong> در اطراف صفحه پیوند/حلقه ← <strong>دشیلد شده</strong>.</li>
+              </ul>
+              <div class="deep-learning" data-title="تحلیل عمیق: پروتون منفی −0.5 ppm، سیکلوپروپان و سیستم‌های ریجید"><p>در سیستم‌های آروماتیک <bdi>10π</bdi> پل‌دار، پروتون بالای مرکز حلقه تا <bdi>−0.5 ppm</bdi> شیلد می‌شود. حلقه سیکلوپروپان نیز پروتون بالای صفحه خود را شیلد می‌کند (<bdi>3.99 → 3.57 ppm</bdi>). در ساختارهای ریجید، پروتون قفل‌شده در پهلوی پیوند سه‌گانه دشیلد می‌شود (<bdi>2.48 → 3.01 ppm</bdi>).</p></div>`
+          },
+          {
+            title: '۰۳. ابزارشناسی FT-NMR/FID و حلال‌های دوتره با قفل دوتریوم', tag: 'Exam Core',
+            html: `<p>در <strong><bdi>FT-NMR</bdi></strong> یک پالس RF باندپهن همه هسته‌ها را هم‌زمان تحریک کرده، سیگنال میرای <strong><bdi>FID</bdi></strong> در قلمرو زمان ثبت شده و با <strong>تبدیل فوریه (<bdi>FT</bdi>)</strong> به طیف فرکانسی تبدیل می‌شود. با تجمیع <bdi>N</bdi> اسکن، <strong><bdi>SNR ∝ √N</bdi></strong> بهبود می‌یابد.</p>
+              <p><strong>حلال‌های دوتره:</strong> پیک حلال را حذف و کانال <strong>قفل دوتریوم (<bdi>Field Lock</bdi>)</strong> را تأمین می‌کنند. پیک باقیمانده <bdi>CDCl₃</bdi> در <strong><bdi>7.26 ppm (s)</bdi></strong> و <bdi>DMSO-d₆</bdi> در <strong><bdi>2.50 ppm (quin)</bdi></strong> همراه با پیک آب رطوبتی در <strong><bdi>3.33 ppm</bdi></strong> است.</p>`
+          }
+        ],
+        flashcards: [
+          { id: 's2_fc1', front: 'فرمول δ (ppm) چیست و چرا مستقل از قدرت مگنت است؟', back: 'δ = Δν(Hz) / ν₀(MHz). با افزایش میدان، Δν و ν₀ به یک نسبت رشد می‌کنند و δ ثابت می‌ماند.' },
+          { id: 's2_fc2', front: 'چرا پروتون استیلنی (–C≡C–H) در 2–3 ppm شیلدتر از آلکن است؟', back: 'زیرا در راستای محور 180° پیوند سه‌گانه در مخروط شیلدینگ آنیزوتروپی (خلاف جهت B₀) قرار دارد.' },
+          { id: 's2_fc3', front: 'تبدیل فوریه (FT) و تجمیع N اسکن در FT-NMR چه می‌کنند؟', back: 'FT سیگنال زمانی FID را به طیف فرکانسی تبدیل می‌کند و تجمیع N اسکن، SNR را √N برابر بهبود می‌دهد.' },
+          { id: 's2_fc4', front: 'پیک‌های باقیمانده CDCl₃ و DMSO-d₆ در طیف ¹H کدام‌اند؟', back: 'CDCl₃ در 7.26 ppm (سینگلت) و DMSO-d₆ در 2.50 ppm (کوینتت) همراه با پیک آب در 3.33 ppm.' }
+        ],
+        quiz: [
+          { question: '[Q-03] در نیتروبنزن (دارای –NO₂)، کدام پروتون‌ها بیشترین دشیلدینگ را دارند؟', options: ['متا', 'ارتو (و سپس پارا) به علت اثر رزونانسی و القایی', 'همه در 7.26 ppm یکسان‌اند', 'پارا در 3 ppm'], answerIndex: 1, explanation: 'گروه نیترو با رزونانس و القا موقعیت‌های ارتو و پارا را دشیلد می‌کند.' },
+          { question: '[Q-04] علت دشیلدشدن پروتون‌های آلکنی در 5–6 ppm چیست؟', options: ['قرارگیری در اطراف صفحه C=C در ناحیه دشیلدینگ آنیزوتروپی π', 'الکترونگاتیوتر بودن sp² از sp', 'چرخش آزاد پیوند دوگانه', 'قرارگیری بالای صفحه'], answerIndex: 0, explanation: 'در اطراف صفحه C=C خطوط میدان القایی هم‌جهت با B₀ هستند.' },
+          { question: '[Q-05] پیوند هیدروژنی داخل‌مولکولی چه اثری بر پیک –OH دارد؟', options: ['انتقال به سمت راست (شیلد)', 'بدون تغییر', 'انتقال به میدان پایین‌تر (δ بزرگ‌تر، سمت چپ)', 'تبدیل به مقدار منفی'], answerIndex: 2, explanation: 'پیوند هیدروژنی ابر الکترونی H را کم کرده و آن را به‌شدت دشیلد می‌کند.' },
+          { question: 'با افزایش تعداد اسکن از ۱ به ۶۴ در FT-NMR، نسبت SNR چند برابر می‌شود؟', options: ['۶۴ برابر', '۳۲ برابر', '۸ برابر (√N)', 'بدون تغییر'], answerIndex: 2, explanation: 'SNR ∝ √N ← √64 = 8 برابر.' },
+          { question: 'ترتیب صحیح سری مشتقات متیل و نکته ساختاری CH₃OH چیست؟', options: ['CH₃I > CH₃Br > CH₃Cl > CH₃OH > CH₃F', 'CH₃F > CH₃Cl > CH₃Br > CH₃I > CH₃OH', 'CH₃F > CH₃OH > CH₃Cl > CH₃Br > CH₃I (CH₃OH هیدروکسیل است، نه هالوژن)', 'همه در 1 ppm'], answerIndex: 2, explanation: 'الکترونگاتیویته F > O > Cl > Br > I است و CH₃OH گروه هیدروکسیل دارد.' }
+        ]
+      });
+
+      /* Simulators 1–5 */
+      registerSimulator({
+        id: 'sim_larmor_zeeman', title: '⚡ ماشین‌حساب لارمور، شکافت زیمان و بولتزمان', description: 'تغییر هسته و B₀ برای محاسبه زنده فرکانس رزونانس، ΔE و جمعیت مازاد.',
+        mount(c) {
+          const NUC = { H1:{name:'¹H',I:.5,g:42.58,lv:'2'}, C13:{name:'¹³C',I:.5,g:10.71,lv:'2'}, F19:{name:'¹⁹F',I:.5,g:40.08,lv:'2'}, P31:{name:'³¹P',I:.5,g:17.25,lv:'2'}, D2:{name:'²H',I:1,g:6.54,lv:'3'}, N14:{name:'¹⁴N',I:1,g:3.08,lv:'3'} };
+          c.innerHTML = `<div style="display:grid;gap:.65rem;"><div style="display:flex;gap:.4rem;flex-wrap:wrap;"><select id="lz_n" class="btn btn-sm" style="flex:1;">${Object.entries(NUC).map(([k,v])=>`<option value="${k}">${v.name} (${v.g} MHz/T)</option>`).join('')}</select><input id="lz_b" type="number" step="0.01" min="0.5" max="23.5" value="7.05" class="btn btn-sm" style="width:96px;direction:ltr;"/></div>
+            <div style="display:flex;gap:.3rem;flex-wrap:wrap;">${[[1.41,'60'],[7.05,'300'],[9.40,'400'],[11.74,'500']].map(([b,l])=>`<button type="button" class="btn btn-sm" data-b="${b}"><bdi>${l} MHz</bdi></button>`).join('')}</div>
+            <div id="lz_o" class="callout" style="margin:0;font-size:.84rem;"></div><svg id="lz_s" viewBox="0 0 380 105" style="width:100%;background:var(--bg-elevated);border-radius:8px;"></svg></div>`;
+          const nE=c.querySelector('#lz_n'), bE=c.querySelector('#lz_b'), oE=c.querySelector('#lz_o'), sE=c.querySelector('#lz_s');
+          const run=()=>{ const n=NUC[nE.value], B=Math.max(.5,Math.min(23.5,+bE.value||7.05)), mhz=n.g*B, dE=6.626e-34*mhz*1e6, r=Math.exp(-dE/(1.38e-23*298)), ex=((1-r)/(1+r))*1e6;
+            oE.innerHTML=`فرکانس: <bdi><strong>${mhz.toFixed(2)} MHz</strong></bdi> | ترازها: <bdi>${n.lv}</bdi> | مازاد: <strong>≈ <bdi>${ex.toFixed(1)}</bdi> در ۱M</strong>`;
+            const g=12+((B-.5)/23)*32; sE.innerHTML=`<line x1="20" y1="52" x2="85" y2="52" stroke="var(--text-muted)" stroke-dasharray="3 3"/><line x1="85" y1="52" x2="155" y2="${52-g}" stroke="var(--border-color)"/><line x1="85" y1="52" x2="155" y2="${52+g}" stroke="var(--border-color)"/><line x1="155" y1="${52-g}" x2="290" y2="${52-g}" stroke="var(--danger)" stroke-width="3"/>${n.I===1?`<line x1="155" y1="52" x2="290" y2="52" stroke="var(--success)" stroke-width="2.5"/>`:''}<line x1="155" y1="${52+g}" x2="290" y2="${52+g}" stroke="var(--accent)" stroke-width="3"/><text x="222" y="56" text-anchor="middle" font-size="11" font-weight="700" fill="var(--exam-accent)">${mhz.toFixed(1)} MHz</text>`;
+          };
+          nE.onchange=run; bE.oninput=run; c.querySelectorAll('[data-b]').forEach(b=>b.onclick=()=>{bE.value=b.dataset.b;run();}); run();
+        }
+      });
+      registerSimulator({
+        id: 'sim_ppm_calc', title: '📏 محاسبه‌گر دقیق δ (ppm) و استقلال از میدان', description: 'تبدیل Δν (Hz) و ν₀ (MHz) به ppm.',
+        mount(c) {
+          c.innerHTML = `<div style="display:grid;gap:.65rem;"><div style="display:flex;gap:.4rem;"><input id="pm_d" type="number" value="804" class="btn btn-sm" style="flex:1;direction:ltr;"/><input id="pm_v" type="number" value="300" class="btn btn-sm" style="flex:1;direction:ltr;"/></div>
+            <div style="display:flex;gap:.3rem;flex-wrap:wrap;"><button type="button" class="btn btn-sm" data-p="160.8,60">CH₃Br 60MHz</button><button type="button" class="btn btn-sm" data-p="804,300">CH₃Br 300MHz</button><button type="button" class="btn btn-sm" data-p="2130,500">CH₃F 500MHz</button></div>
+            <div id="pm_o" class="callout success" style="margin:0;font-size:.84rem;"></div></div>`;
+          const dE=c.querySelector('#pm_d'), vE=c.querySelector('#pm_v'), oE=c.querySelector('#pm_o');
+          const run=()=>{ const d=+dE.value||0, v=Math.max(1,+vE.value||300), p=d/v; oE.innerHTML=`<bdi><strong>δ = ${p.toFixed(2)} ppm</strong></bdi> | در 60MHz: <bdi>${(p*60).toFixed(1)} Hz</bdi> | در 500MHz: <bdi>${(p*500).toFixed(1)} Hz</bdi>`; };
+          dE.oninput=run; vE.oninput=run; c.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const[a,x]=b.dataset.p.split(',');dE.value=a;vE.value=x;run();}); run();
+        }
+      });
+      registerSimulator({
+        id: 'sim_shielding', title: '🛡️ شبیه‌ساز شیلدینگ و سری مشتقات متیل', description: 'بررسی اثر الکترونگاتیوی بر ابر الکترونی، B_ind و شیفت.',
+        mount(c) {
+          c.innerHTML = `<div style="display:grid;gap:.65rem;"><div style="display:flex;gap:.3rem;flex-wrap:wrap;">${[[0,'TMS'],[22,'CH₃I'],[30,'CH₃Br'],[37,'CH₃Cl'],[45,'CH₃OH'],[62,'CH₃F']].map(([v,l])=>`<button type="button" class="btn btn-sm" data-s="${v}"><bdi>${l}</bdi></button>`).join('')}</div><input id="sh_r" type="range" min="0" max="100" value="37"/><div id="sh_o" class="callout" style="margin:0;font-size:.84rem;"></div></div>`;
+          const r=c.querySelector('#sh_r'), o=c.querySelector('#sh_o');
+          const run=()=>{ const e=+r.value, p=e<=62?(e/100)*6.87:4.26+((e-62)/38)*7.74; o.innerHTML=`ابر الکترونی: <bdi><strong>${100-e}%</strong></bdi> | شیفت: <bdi><strong>${p.toFixed(2)} ppm</strong></bdi> — ${e<=20?'شیلد بالا (میدان بالا)':(e<=55?'دشیلد متوسط':'دشیلد شدید (میدان پایین)')}`; };
+          r.oninput=run; c.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{r.value=b.dataset.s;run();}); run();
+        }
+      });
+      registerSimulator({
+        id: 'sim_anisotropy', title: '🧲 مدل هندسی مخروط‌های آنیزوتروپی π', description: 'بنزن، آلکن، کربونیل و شیلدشدن پروتون آلکینی در محور 180°.',
+        mount(c) {
+          const D={benzene:{l:'بنزن',z:'اطراف حلقه: دشیلد (7–8 ppm) | بالای حلقه: شیلد (تا −0.5 ppm)',ax:0,b:'بنزن 6π'},alkene:{l:'آلکن',z:'اطراف صفحه C=C: دشیلد (5–6 ppm)',ax:0,b:'C = C'},carbonyl:{l:'کربونیل',z:'پروتون آلدهیدی: دشیلد شدید (9–10 ppm)',ax:0,b:'C = O'},alkyne:{l:'آلکین',z:'محور 180° (پروتون استیلنی): شیلد (2–3 ppm)!',ax:1,b:'C ≡ C'}};
+          c.innerHTML=`<div style="display:grid;gap:.65rem;"><div style="display:flex;gap:.3rem;flex-wrap:wrap;">${Object.entries(D).map(([k,v])=>`<button type="button" class="btn btn-sm" data-a="${k}">${v.l}</button>`).join('')}</div><svg id="an_s" viewBox="0 0 360 155" style="width:100%;background:var(--bg-elevated);border-radius:8px;"></svg><div id="an_o" class="callout" style="margin:0;font-size:.83rem;"></div></div>`;
+          const s=c.querySelector('#an_s'), o=c.querySelector('#an_o');
+          const show=k=>{ const d=D[k]; o.innerHTML=`<strong>${d.l}:</strong> ${d.z}`;
+            s.innerHTML=`<line x1="25" y1="140" x2="25" y2="20" stroke="var(--accent)" stroke-width="2.5"/><text x="25" y="152" text-anchor="middle" font-size="10" fill="var(--accent)">B₀</text><polygon points="190,78 150,18 230,18" fill="var(--success-soft)" stroke="var(--success)" stroke-dasharray="3 2"/><polygon points="190,78 150,138 230,138" fill="var(--success-soft)" stroke="var(--success)" stroke-dasharray="3 2"/><ellipse cx="105" cy="78" rx="30" ry="42" fill="var(--danger-soft)" stroke="var(--danger)" stroke-dasharray="3 2"/><ellipse cx="275" cy="78" rx="30" ry="42" fill="var(--danger-soft)" stroke="var(--danger)" stroke-dasharray="3 2"/><rect x="155" y="66" width="70" height="24" rx="5" fill="var(--bg-surface)" stroke="var(--text-primary)"/><text x="190" y="82" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--text-primary)">${d.b}</text>${d.ax?`<circle cx="190" cy="40" r="10" fill="var(--success)"/><text x="190" y="44" text-anchor="middle" font-size="9.5" fill="#fff">H</text>`:`<circle cx="275" cy="78" r="10" fill="var(--danger)"/><text x="275" y="82" text-anchor="middle" font-size="9.5" fill="#fff">H</text>`}`;
+          };
+          c.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>show(b.dataset.a)); show('alkyne');
+        }
+      });
+      registerSimulator({
+        id: 'sim_ftnmr', title: '📡 شبیه‌ساز FT-NMR، سیگنال FID و بهبود SNR', description: 'تبدیل قلمرو زمان (FID) به قلمرو فرکانس (FT) و اثر √N.',
+        mount(c) {
+          let m='fid';
+          c.innerHTML=`<div style="display:grid;gap:.65rem;"><div style="display:flex;gap:.35rem;flex-wrap:wrap;align-items:center;"><button type="button" class="btn btn-sm btn-primary" id="ft_1">FID (زمان)</button><button type="button" class="btn btn-sm" id="ft_2">تبدیل فوریه (FT)</button><label style="font-size:.8rem;margin-right:auto;">اسکن N: <bdi id="ft_nl">16</bdi><input id="ft_n" type="range" min="1" max="64" value="16"/></label></div><svg id="ft_s" viewBox="0 0 380 120" style="width:100%;background:var(--bg-elevated);border-radius:8px;"></svg><div id="ft_i" style="font-size:.82rem;"></div></div>`;
+          const s=c.querySelector('#ft_s'), nE=c.querySelector('#ft_n'), nl=c.querySelector('#ft_nl'), inf=c.querySelector('#ft_i'), b1=c.querySelector('#ft_1'), b2=c.querySelector('#ft_2');
+          const draw=()=>{ const N=+nE.value, nz=.25/Math.sqrt(N); nl.textContent=N; inf.innerHTML=`بهبود SNR (<bdi>√N</bdi>): <strong><bdi>${Math.sqrt(N).toFixed(1)}×</bdi></strong>`;
+            let d='';
+            if(m==='fid'){ for(let i=0;i<=150;i++){ const t=(i/150)*4.5, x=15+(i/150)*350, y=60-((.5*Math.cos(14*t)+.3*Math.cos(8*t))*Math.exp(-.7*t)+Math.sin(i*19+N)*.4*nz)*45; d+=(i?' L ':'M ')+x.toFixed(1)+' '+y.toFixed(1); } s.innerHTML=`<path d="${d}" fill="none" stroke="var(--accent)" stroke-width="1.8"/>`; }
+            else { for(let i=0;i<=150;i++){ const p=5-(i/150)*5, x=15+(i/150)*350; let h=0; [{p:3.67,h:70},{p:2.32,h:50},{p:1.14,h:80}].forEach(k=>h+=k.h*(.0025/((p-k.p)**2+.0025))); const y=102-Math.min(86,h+Math.abs(Math.sin(i*23+N))*nz*24); d+=(i?' L ':'M ')+x.toFixed(1)+' '+y.toFixed(1); } s.innerHTML=`<line x1="15" y1="102" x2="365" y2="102" stroke="var(--text-primary)"/><path d="${d}" fill="none" stroke="var(--success)" stroke-width="2"/>`; }
+          };
+          b1.onclick=()=>{m='fid';b1.classList.add('btn-primary');b2.classList.remove('btn-primary');draw();};
+          b2.onclick=()=>{m='ft';b2.classList.add('btn-primary');b1.classList.remove('btn-primary');draw();};
+          nE.oninput=draw; draw();
+        }
+      });
+    })();
+
+    /* =========================================================
+       MODULE 2: SESSIONS 3 & 4 + LIVE SVGs + SIMULATORS 6–10
+       ========================================================= */
+    (function () {
+      registerSession({
+        id: 's3', number: 3, shortTitle: 'هم‌ارزی، انتگرال و کوپلاژ ساده',
+        title: 'جلسه ۳: هم‌ارزی پروتون‌ها، انتگرال‌گیری و شکافت اسپین-اسپین در ¹H-NMR',
+        summary: 'هم‌ارزی شیمیایی و مغناطیسی، هموتوپیک، انانتیوتوپیک و دیاسترئوتوپیک (۲-بوتانول ۶ پیکی)، انتگرال پله‌ای، قاعده 2nI+1 و مثلث پاسکال-خیام، و طیف‌های تعاملی بنزیل استات، اتیل برمید و ۴-کلروسینامیک اسید.',
+        sections: [
+          {
+            title: '۰۱. هم‌ارزی شیمیایی/مغناطیسی و مثال ۶ پیکی ۲-بوتانول کایرال', tag: 'Exam Core',
+            html: `<p><strong>هموتوپیک</strong> (محور <bdi>Cₙ</bdi>) و <strong>انانتیوتوپیک</strong> (صفحه <bdi>σ</bdi>، <bdi>Pro-R/Pro-S</bdi>) در حلال آکایرال ۱ سیگنال می‌دهند؛ اما پروتون‌های <strong>دیاسترئوتوپیک</strong> (مجاور مرکز کایرال یا حلقه/آلکن نامتقارن) <strong>۲ سیگنال مجزا</strong> تولید می‌کنند.</p>
+              <div class="callout exam-core"><strong>مثال ۲-بوتانول (<bdi>CH₃–CH(OH)–CH₂–CH₃</bdi>):</strong> متیل راست (۱) + دو پروتون دیاسترئوتوپیک <bdi>CH₂</bdi> (۲ و ۳) + <bdi>OH</bdi> (۴) + <bdi>CH</bdi> (۵) + متیل چپ (۶) = <strong>۶ سیگنال مجزا!</strong> همچنین نرمال بوتان (نسبت <bdi>6:4</bdi>) و ایزوبوتان (نسبت <bdi>9:1</bdi>) هر دو ۲ سیگنال دارند.</div>`
+          },
+          {
+            title: '۰۲. انتگرال‌گیری پله‌ای و طیف تعاملی بنزیل استات (60 MHz)', tag: 'Exam Core',
+            html: `<p>معیار تعداد نسبی پروتون‌ها <strong>مساحت زیر منحنی (انتگرال)</strong> است. در بنزیل استات پله‌های <bdi>55.5, 22.0, 32.5</bdi> نسبت دقیق <strong><bdi>5 : 2 : 3</bdi></strong> می‌سازند. روی هر گروه مولکول کلیک یا هاور کنید:</p>`,
+            spectrumConfig: {
+              title: 'بنزیل استات (C₆H₅–CH₂–OCOCH₃) — 60 MHz', type: '1H', minPpm: 0, maxPpm: 9, freqMHz: 60,
+              moleculeSvg: `<svg viewBox="0 0 440 105" style="width:100%;max-width:440px;background:var(--bg-elevated);border-radius:8px;border:1px solid var(--border-color);">
+                <g data-group-id="ph" style="cursor:pointer;" onmouseenter="this.dispatchEvent(new MouseEvent('click'))"><polygon points="45,52 65,28 96,28 116,52 96,76 65,76" fill="var(--accent-soft)" stroke="#2563eb" stroke-width="2"/><text x="80" y="95" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2563eb">فنیل (5H)</text></g>
+                <line x1="116" y1="52" x2="155" y2="52" stroke="var(--text-primary)" stroke-width="2"/>
+                <g data-group-id="ch2" style="cursor:pointer;" onmouseenter="this.dispatchEvent(new MouseEvent('click'))"><rect x="155" y="37" width="48" height="30" rx="6" fill="var(--danger-soft)" stroke="#dc2626" stroke-width="2"/><text x="179" y="57" text-anchor="middle" font-size="11.5" font-weight="700" fill="#dc2626">CH₂</text></g>
+                <line x1="203" y1="52" x2="290" y2="52" stroke="var(--text-primary)" stroke-width="2"/><text x="246" y="46" text-anchor="middle" font-size="12" font-weight="700" fill="var(--text-primary)">O–C(=O)</text>
+                <g data-group-id="ch3" style="cursor:pointer;" onmouseenter="this.dispatchEvent(new MouseEvent('click'))"><rect x="290" y="37" width="52" height="30" rx="6" fill="var(--success-soft)" stroke="#059669" stroke-width="2"/><text x="316" y="57" text-anchor="middle" font-size="11.5" font-weight="700" fill="#059669">CH₃</text></g>
+              </svg>`,
+              peaks: [
+                { id:'ph', groupId:'ph', label:'C₆H₅ (5H)', ppm:7.30, multiplicity:'s', integral:5, height:.95, color:'#2563eb', note:'۵ پروتون فنیل (پله ۵۵٫۵).' },
+                { id:'ch2', groupId:'ch2', label:'-CH₂O- (2H)', ppm:5.10, multiplicity:'s', integral:2, height:.65, color:'#dc2626', note:'متیلن بین اکسیژن و حلقه (پله ۲۲٫۰).' },
+                { id:'ch3', groupId:'ch3', label:'-OCOCH₃ (3H)', ppm:2.05, multiplicity:'s', integral:3, height:.80, color:'#059669', note:'سؤال Q-06: متیل استر در 2.0 ppm (پله ۳۲٫۵).' }
+              ]
+            }
+          },
+          {
+            title: '۰۳. قاعده 2nI+1، مثلث پاسکال-خیام، اتیل برمید و ۴-کلروسینامیک اسید', tag: 'Exam Core',
+            html: `<p>فرمول جامع شکافت <strong><bdi>2nI + 1</bdi></strong> است: برای پروتون (<bdi>I=1/2</bdi>) به <bdi>n+1</bdi> و مثلث پاسکال-خیام می‌رسد و برای دوتریوم (<bdi>I=1</bdi>) نسبت غیرپاسکالی <strong><bdi>1:1:1</bdi></strong> می‌دهد. <strong>تأکید استاد:</strong> هر سه‌شاخه‌ای تریپلت نیست؛ نسبت <em>مساحت</em> باید <bdi>1:2:1</bdi> باشد.</p>
+              <p>در <strong>۴-کلروسینامیک اسید (<bdi>300 MHz</bdi>)</strong>، اختلاف دو شاخه دابلت الفینی <bdi>Δδ = 0.0533 ppm</bdi> است ← <strong><bdi>J = 0.0533 × 300 = 15.99 ≈ 16 Hz</bdi></strong> (آرایش ترانس).</p>`,
+            spectrumConfig: {
+              title: '۴-کلروسینامیک اسید (C₉H₇ClO₂) — 300 MHz (J_trans = 16 Hz)', type: '1H', minPpm: 0, maxPpm: 13.5, freqMHz: 300,
+              moleculeSvg: `<svg viewBox="0 0 460 95" style="width:100%;max-width:460px;background:var(--bg-elevated);border-radius:8px;border:1px solid var(--border-color);">
+                <text x="20" y="52" font-size="12" font-weight="800" fill="var(--exam-accent)">Cl</text><line x1="38" y1="48" x2="62" y2="48" stroke="var(--text-primary)" stroke-width="2"/>
+                <g data-group-id="ar1" style="cursor:pointer;" onmouseenter="this.dispatchEvent(new MouseEvent('click'))"><polygon points="62,48 80,24 114,24 132,48 114,72 80,72" fill="var(--accent-soft)" stroke="#2563eb" stroke-width="2"/></g>
+                <line x1="132" y1="48" x2="174" y2="48" stroke="var(--text-primary)" stroke-width="2"/>
+                <g data-group-id="v3" style="cursor:pointer;" onmouseenter="this.dispatchEvent(new MouseEvent('click'))"><rect x="174" y="34" width="44" height="28" rx="5" fill="var(--deep-soft)" stroke="#7c3aed" stroke-width="2"/><text x="196" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="#7c3aed">CH(3)</text></g>
+                <line x1="218" y1="45" x2="256" y2="45" stroke="var(--text-primary)" stroke-width="2"/><line x1="218" y1="51" x2="256" y2="51" stroke="var(--text-primary)" stroke-width="2"/>
+                <g data-group-id="v2" style="cursor:pointer;" onmouseenter="this.dispatchEvent(new MouseEvent('click'))"><rect x="256" y="34" width="44" height="28" rx="5" fill="var(--exam-soft)" stroke="#d97706" stroke-width="2"/><text x="278" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="#d97706">CH(2)</text></g>
+                <line x1="300" y1="48" x2="335" y2="48" stroke="var(--text-primary)" stroke-width="2"/>
+                <g data-group-id="cooh" style="cursor:pointer;" onmouseenter="this.dispatchEvent(new MouseEvent('click'))"><rect x="335" y="34" width="88" height="28" rx="5" fill="var(--danger-soft)" stroke="#dc2626" stroke-width="2"/><text x="379" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">COOH (1H)</text></g>
+              </svg>`,
+              peaks: [
+                { id:'cooh', groupId:'cooh', label:'COOH', ppm:12.50, multiplicity:'s', integral:1, height:.65, color:'#dc2626', note:'پروتون اسیدی (1H, s) مبنای انتگرال.' },
+                { id:'ar1', groupId:'ar1', label:'Ar-H (4H)', ppm:7.72, multiplicity:'d', jHz:8.4, integral:4, height:.85, color:'#2563eb', note:'دو دابلت آروماتیک پارا-کلرو.' },
+                { id:'v3', groupId:'v3', label:'H3 (d, 16Hz)', ppm:7.60, multiplicity:'d', jHz:16, integral:1, height:.60, color:'#7c3aed', note:'پروتون بتای آلکن ترانس.' },
+                { id:'v2', groupId:'v2', label:'H2 (d, 16Hz)', ppm:6.60, multiplicity:'d', jHz:16, integral:1, height:.65, color:'#d97706', note:'Δδ = 0.0533 × 300 = 15.99 ≈ 16 Hz (ترانس).' }
+              ]
+            }
+          }
+        ],
+        flashcards: [
+          { id:'s3_fc1', front:'تفاوت پروتون‌های انانتیوتوپیک و دیاسترئوتوپیک چیست؟', back:'انانتیوتوپیک در حلال آکایرال ۱ سیگنال می‌دهد؛ دیاسترئوتوپیک (مثل CH₂ مجاور مرکز کایرال) ۲ سیگنال مجزا می‌دهد.' },
+          { id:'s3_fc2', front:'۲-بوتانول کایرال چند سیگنال در ¹H-NMR می‌دهد؟', back: '۶ سیگنال مجزا (به دلیل دیاسترئوتوپیک بودن دو هیدروژن CH₂).' },
+          { id:'s3_fc3', front:'الگوی سپتت (1H) + دابلت (6H) نشانه چه گروهی است؟ (Q-07)', back:'گروه ایزوپروپیل –CH(CH₃)₂.' },
+          { id:'s3_fc4', front:'یک دوتریوم مجاور (I=1) پیک را به چند خط و با چه نسبتی می‌شکند؟', back:'2(1)(1)+1 = 3 خط با نسبت ۱:۱:۱ (غیرپاسکالی).' }
+        ],
+        quiz: [
+          { question: '۲-بوتانول کایرال CH₃–CH(OH)–CH₂–CH₃ چند سیگنال در ¹H-NMR می‌دهد؟', options: ['۴', '۵', '۶ (دو H در CH₂ دیاسترئوتوپیک‌اند)', '۷'], answerIndex: 2, explanation: 'به دلیل وجود مرکز کایرال، دو هیدروژن CH₂ دو پیک مجزا می‌دهند ← جمعاً ۶ پیک.' },
+          { question: '[Q-06] پیک سینگلت در 2.0 ppm با انتگرال 3H در بنزیل استات متعلق به کدام گروه است؟', options: ['فنیل', '–CH₂O–', '–OCOCH₃', 'COOH'], answerIndex: 2, explanation: 'متیل استر (–OCOCH₃) بدون همسایه در حدود 2.0 ppm ظاهر می‌شود.' },
+          { question: '[Q-07] سپتت 1H همراه با دابلت 6H نشانه کدام گروه است؟', options: ['اتیل', 'ایزوپروپیل', 'ترت-بوتیل', 'متوکسی'], answerIndex: 1, explanation: 'در –CH(CH₃)₂ پروتون CH با ۶ همسایه سپتت و دو متیل دابلت 6H می‌دهند.' },
+          { question: 'در طیف 300 MHz ترکیب ۴-کلروسینامیک اسید، Δδ = 0.0533 ppm معادل چه مقدار J و چه آرایشی است؟', options: ['5.3 Hz', '8 Hz ارتو', '16 Hz آلکن ترانس', '30 Hz'], answerIndex: 2, explanation: '0.0533 × 300 = 15.99 ≈ 16 Hz (آرایش ترانس).' }
+        ]
+      });
+
+      registerSession({
+        id: 's4', number: 4, shortTitle: 'کارگاه حل ساختار مجهول',
+        title: 'جلسه ۴: کارگاه حل ساختار مجهول با طیف ¹H-NMR و تحلیل دقیق J',
+        summary: 'الگوریتم ۴ مرحله‌ای استاد مرادی، فرمول DU، پیک‌های خارج از خط پایه (Off-scale)، تصحیح 60×0.1177 = 7.062 Hz، و مثال‌های تعاملی C₄H₇O₂Br، کومن، اتیل پروپانوآت و پارا-اتیل‌بنزآلدهید.',
+        sections: [
+          {
+            title: '۰۱. الگوریتم ۴ مرحله‌ای، فرمول DU و تصحیح 7.062 Hz', tag: 'Exam Core',
+            html: `<div class="formula-box">DU = (2C + 2 + N − H − X) / 2 &nbsp;|&nbsp; J (Hz) = Δδ (ppm) × ν₀ (MHz)</div>
+              <p><strong>ترتیب حل استاد مرادی:</strong> ۱) تعداد سیگنال و تقارن ← ۲) انتگرال ← ۳) الگوی شکافت و <bdi>J</bdi> ← ۴) جابه‌جایی شیمیایی (داوری نهایی در استرهای هم‌شکافت).</p>
+              <div class="callout warning"><strong>تصحیح علمی جزوه:</strong> در دستگاه <bdi>60 MHz</bdi> برای <bdi>Δδ = 0.1177 ppm</bdi> حاصل‌ضرب دقیق <strong><bdi>60 × 0.1177 = 7.062 Hz</bdi></strong> است (عدد <bdi>7.056 Hz</bdi> در جزوه خطا بوده است). همچنین یک پیک <bdi>15 Hz</bdi> در <bdi>60 MHz</bdi> برابر <bdi>1/4 ppm</bdi> اما در <bdi>300 MHz</bdi> تنها <bdi>1/20 ppm</bdi> اشغال می‌کند.</div>`
+          },
+          {
+            title: '۰۲. مثال‌های کلیدی تعاملی: C₄H₇O₂Br (پیک Offset)، کومن و اتیل پروپانوآت', tag: 'Exam Core',
+            html: `<p>در <strong><bdi>C₄H₇O₂Br</bdi></strong> (<bdi>DU=1</bdi>)، پیک اسیدی <bdi>12.0 ppm</bdi> اغلب بالاتر از خط پایه (<strong>Off-scale/Offset</strong>) رسم می‌شود؛ هرگز عدد محور زیر کادر آن را نخوانید! با داشتن تنها یک سینگلت <bdi>6H</bdi> در <bdi>1.93 ppm</bdi> ساختار <strong>آلفا-برموایزوبوتیریک اسید</strong> (<bdi>(CH₃)₂C(Br)COOH</bdi>) قطعی است. همچنین در <strong>کومن (<bdi>C₉H₁₂</bdi>)</strong> الگوی <bdi>5H</bdi> آروماتیک + سپتت <bdi>1H (2.90)</bdi> + دابلت <bdi>6H (1.25)</bdi> دیده می‌شود.</p>`,
+            spectrumConfig: {
+              title: 'اتیل پروپانوآت (CH₃CH₂COOCH₂CH₃) — داوری استرها با Chemical Shift', type: '1H', minPpm: 0, maxPpm: 6, freqMHz: 300,
+              moleculeSvg: `<svg viewBox="0 0 440 85" style="width:100%;max-width:440px;background:var(--bg-elevated);border-radius:8px;border:1px solid var(--border-color);">
+                <g data-group-id="a" style="cursor:pointer;" onmouseenter="this.dispatchEvent(new MouseEvent('click'))"><rect x="14" y="28" width="52" height="28" rx="5" fill="var(--accent-soft)" stroke="#2563eb" stroke-width="2"/><text x="40" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="#2563eb">CH₃(a)</text></g>
+                <line x1="66" y1="42" x2="90" y2="42" stroke="var(--text-primary)" stroke-width="2"/>
+                <g data-group-id="b" style="cursor:pointer;" onmouseenter="this.dispatchEvent(new MouseEvent('click'))"><rect x="90" y="28" width="52" height="28" rx="5" fill="var(--exam-soft)" stroke="#d97706" stroke-width="2"/><text x="116" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="#d97706">CH₂(b)</text></g>
+                <line x1="142" y1="42" x2="262" y2="42" stroke="var(--text-primary)" stroke-width="2"/><text x="202" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="var(--text-primary)">C(=O)–O</text>
+                <g data-group-id="c" style="cursor:pointer;" onmouseenter="this.dispatchEvent(new MouseEvent('click'))"><rect x="262" y="28" width="52" height="28" rx="5" fill="var(--danger-soft)" stroke="#dc2626" stroke-width="2"/><text x="288" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">CH₂(c)</text></g>
+                <line x1="314" y1="42" x2="340" y2="42" stroke="var(--text-primary)" stroke-width="2"/>
+                <g data-group-id="d" style="cursor:pointer;" onmouseenter="this.dispatchEvent(new MouseEvent('click'))"><rect x="340" y="28" width="52" height="28" rx="5" fill="var(--success-soft)" stroke="#059669" stroke-width="2"/><text x="366" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">CH₃(d)</text></g>
+              </svg>`,
+              peaks: [
+                { id:'c', groupId:'c', label:'c (-OCH₂-)', ppm:4.13, multiplicity:'q', jHz:7.1, integral:2, height:.72, color:'#dc2626', note:'متصل به اکسیژن استری (4.13 ppm).' },
+                { id:'b', groupId:'b', label:'b (-CH₂CO-)', ppm:2.32, multiplicity:'q', jHz:7.5, integral:2, height:.70, color:'#d97706', note:'مجاور کربونیل (2.32 ppm).' },
+                { id:'d', groupId:'d', label:'d (-OCH₂CH₃)', ppm:1.26, multiplicity:'t', jHz:7.1, integral:3, height:.88, color:'#059669', note:'متیل سمت اکسیژن.' },
+                { id:'a', groupId:'a', label:'a (CH₃CH₂CO)', ppm:1.15, multiplicity:'t', jHz:7.5, integral:3, height:.88, color:'#2563eb', note:'متیل سمت کربونیل.' }
+              ]
+            }
+          },
+          {
+            title: '۰۳. پارا-اتیل‌بنزآلدهید (C₉H₁₀O) و اتر متقارن اشباع (C₆H₁₄O₂)', tag: 'Exam Core',
+            html: `<p>در <strong>پارا-اتیل‌بنزآلدهید</strong> (<bdi>DU=5</bdi>) پیک <bdi>9.98 ppm (1H, s)</bdi> آلدهید، دو دابلت <bdi>2H+2H</bdi> بنزن پارا و کوارتت/تریپلت گروه اتیل را ثابت می‌کنند. در <strong>اتر متقارن <bdi>C₆H₁₄O₂</bdi> (<bdi>DU=0</bdi>)</strong>، نبود دو پیک تک‌پروتونی <bdi>OH</bdi> الکل را رد کرده و اتر متقارن را قطعی می‌کند.</p>`,
+            spectrumConfig: {
+              title: 'پارا-اتیل‌بنزآلدهید (C₉H₁₀O) — DU = 5', type: '1H', minPpm: 0, maxPpm: 11, freqMHz: 300,
+              peaks: [
+                { id:'cho', groupId:'cho', label:'CHO (1H)', ppm:9.98, multiplicity:'s', integral:1, height:.60, color:'#dc2626', note:'پروتون آلدهیدی.' },
+                { id:'ar1', groupId:'ar1', label:'ArH کنار CHO', ppm:7.81, multiplicity:'d', jHz:8.1, integral:2, height:.82, color:'#d97706', note:'ارتو به گروه الکترون‌کشنده CHO.' },
+                { id:'ar2', groupId:'ar2', label:'ArH کنار Et', ppm:7.35, multiplicity:'d', jHz:8.1, integral:2, height:.82, color:'#7c3aed', note:'ارتو به گروه اتیل.' },
+                { id:'ch2', groupId:'ch2', label:'CH₂ بنزیلیک', ppm:2.71, multiplicity:'q', jHz:7.6, integral:2, height:.68, color:'#059669', note:'کوارتت 2H.' },
+                { id:'ch3', groupId:'ch3', label:'CH₃ (3H)', ppm:1.26, multiplicity:'t', jHz:7.6, integral:3, height:.90, color:'#2563eb', note:'تریپلت 3H.' }
+              ]
+            }
+          }
+        ],
+        flashcards: [
+          { id:'s4_fc1', front:'فرمول دقیق DU چیست و چه اتم‌هایی نادیده گرفته می‌شوند؟', back:'DU = (2C + 2 + N − H − X)/2؛ اکسیژن و گوگرد در فرمول وارد نمی‌شوند.' },
+          { id:'s4_fc2', front:'حاصل دقیق 60 MHz × 0.1177 ppm چقدر است؟', back:'7.062 Hz (عدد 7.056 Hz در جزوه خطای محاسباتی بوده است).' },
+          { id:'s4_fc3', front:'پیک خارج از خط پایه (Off-scale/Offset) چه معنایی دارد؟', back:'بازه خالی میانی (مثلاً 4 تا 12 ppm) حذف شده و پیک دوردست (مثل COOH در 12 ppm) در کادر بالای خط پایه منتقل شده است.' }
+        ],
+        quiz: [
+          { question: '[Q-08] ترکیب C₉H₁₀O₂ با پیک 12.1 (1H, s)، دو دابلت 7.3 و 7.9 (2H+2H)، کوارتت 2.7 (2H) و تریپلت 1.25 (3H) کدام است؟', options: ['پارا-اتیل‌بنزوئیک اسید', 'اتیل بنزوآت', 'پارا-متوکسی‌استوفنون', 'بنزیل استات'], answerIndex: 0, explanation: 'پیک 12.1 اسید کربوکسیلیک، دو دابلت بنزن پارا و کوارتت/تریپلت گروه اتیل است.' },
+          { question: 'درجه غیراشباعی C₆H₅NCl₂ کدام است؟', options: ['3', '4', '5', '6'], answerIndex: 1, explanation: '(12 + 2 + 1 − 5 − 2)/2 = 4.' },
+          { question: 'در دستگاه 60 MHz برای Δδ = 0.1177 ppm، مقدار دقیق J کدام است؟', options: ['7.056 Hz', '7.062 Hz', '1.961 Hz', '14.12 Hz'], answerIndex: 1, explanation: '60 × 0.1177 = 7.062 Hz.' },
+          { question: 'طیف استر C₄H₈O₂ با سینگلت 3H در 3.67 ppm، کوارتت 2H در 2.34 و تریپلت 3H در 1.15 کدام است؟', options: ['اتیل استات', 'متیل پروپانوآت', 'ایزوپروپیل فرمات', 'بوتانوئیک اسید'], answerIndex: 1, explanation: 'سینگلت 3.67 ppm نشانه –COOCH₃ است ← متیل پروپانوآت.' }
+        ]
+      });
+
+      /* Simulators 6–10 */
+      registerSimulator({
+        id:'sim_x_sub', title:'🧬 آزمون جایگزینی X و تشخیص هم‌ارزی', description:'هموتوپیک (پروپان)، انانتیوتوپیک (اتانول) و دیاسترئوتوپیک (۲-بوتانول ۶ پیکی).',
+        mount(c){
+          const P={propane:['پروپان','هموتوپیک ← ۱ پیک مشترک برای CH₂'],ethanol:['اتانول','انانتیوتوپیک (Pro-R/S) ← ۱ پیک در حلال آکایرال'],but2:['۲-بوتانول کایرال','دیاسترئوتوپیک ← ۲ پیک مجزا برای CH₂ (جمعاً ۶ پیک!)']};
+          c.innerHTML=`<div style="display:grid;gap:.6rem;"><div style="display:flex;gap:.35rem;flex-wrap:wrap;">${Object.entries(P).map(([k,v])=>`<button type="button" class="btn btn-sm" data-x="${k}">${v[0]}</button>`).join('')}</div><div id="xs_o" class="callout" style="margin:0;font-size:.85rem;"></div></div>`;
+          const o=c.querySelector('#xs_o'), sh=k=>o.innerHTML=`<strong>${P[k][0]}:</strong> ${P[k][1]}`;
+          c.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>sh(b.dataset.x)); sh('but2');
+        }
+      });
+      registerSimulator({
+        id:'sim_integral', title:'📐 محاسبه‌گر انتگرال پله‌ای NMR', description:'تبدیل ارتفاع پله‌های خط‌کش به تعداد دقیق پروتون‌ها.',
+        mount(c){
+          c.innerHTML=`<div style="display:grid;gap:.6rem;"><div style="display:flex;gap:.3rem;flex-wrap:wrap;"><button type="button" class="btn btn-sm" data-ip="10|54,23,33">جزوه</button><button type="button" class="btn btn-sm" data-ip="10|55.5,22,32.5">بنزیل استات</button></div><div style="display:flex;gap:.4rem;"><input id="in_h" type="number" value="10" class="btn btn-sm" style="width:76px;direction:ltr;"/><input id="in_v" type="text" value="54, 23, 33" class="btn btn-sm" style="flex:1;direction:ltr;"/></div><div id="in_o" class="callout success" style="margin:0;font-size:.84rem;"></div></div>`;
+          const hE=c.querySelector('#in_h'), vE=c.querySelector('#in_v'), o=c.querySelector('#in_o');
+          const run=()=>{ const H=+hE.value||0, vs=vE.value.split(/[,،\s]+/).map(Number).filter(n=>n>0); if(!vs.length)return; const sum=vs.reduce((a,b)=>a+b,0), u=H>0?sum/H:Math.min(...vs); o.innerHTML=vs.map((v,i)=>`پیک ${i+1}: <bdi><strong>${Math.max(1,Math.round(v/u))}H</strong></bdi>`).join(' | '); };
+          hE.oninput=run; vE.oninput=run; c.querySelectorAll('[data-ip]').forEach(b=>b.onclick=()=>{const[h,v]=b.dataset.ip.split('|');hE.value=h;vE.value=v;run();}); run();
+        }
+      });
+      registerSimulator({
+        id:'sim_pascal', title:'🔺 مولد مالتیپلت و مثلث پاسکال-خیام', description:'تولید نسبت مساحت برای پروتون (I=1/2) و دوتریوم (I=1).',
+        mount(c){
+          const NM=['Singlet','Doublet','Triplet','Quartet','Quintet','Sextet','Septet'];
+          const pas=n=>{const r=[1];for(let k=1;k<=n;k++)r.push(r[k-1]*(n-k+1)/k);return r;};
+          const dt=n=>{let a=[1];for(let s=0;s<n;s++){const nx=Array(a.length+2).fill(0);a.forEach((v,i)=>{nx[i]+=v;nx[i+1]+=v;nx[i+2]+=v;});a=nx;}return a;};
+          c.innerHTML=`<div style="display:grid;gap:.6rem;"><div style="display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;"><label style="font-size:.8rem;">n: <bdi id="ps_l">2</bdi><input id="ps_n" type="range" min="0" max="6" value="2"/></label><select id="ps_i" class="btn btn-sm"><option value=".5">¹H (I=1/2)</option><option value="1">²H (I=1)</option></select></div><div id="ps_o" class="callout" style="margin:0;font-size:.85rem;"></div></div>`;
+          const nE=c.querySelector('#ps_n'), iE=c.querySelector('#ps_i'), l=c.querySelector('#ps_l'), o=c.querySelector('#ps_o');
+          const run=()=>{ const n=+nE.value, I=+iE.value; l.textContent=n; const arr=I===.5?pas(n):dt(Math.min(n,3)); o.innerHTML=`<strong>${I===.5?NM[n]:arr.length+' خط غیرپاسکالی'}</strong> | نسبت: <bdi><strong>${arr.join(' : ')}</strong></bdi>`; };
+          nE.oninput=run; iE.onchange=run; run();
+        }
+      });
+      registerSimulator({
+        id:'sim_j_calc', title:'🧮 ماشین‌حساب J (+ تصحیح 7.062 Hz)', description:'محاسبه J = Δδ × ν₀ در دستگاه‌های ۶۰ تا ۵۰۰ مگاهرتز.',
+        mount(c){
+          c.innerHTML=`<div style="display:grid;gap:.6rem;"><div style="display:flex;gap:.35rem;flex-wrap:wrap;"><input id="jc_1" type="number" step="0.0001" value="4.1177" class="btn btn-sm" style="width:92px;direction:ltr;"/><input id="jc_2" type="number" step="0.0001" value="4.0000" class="btn btn-sm" style="width:92px;direction:ltr;"/><select id="jc_f" class="btn btn-sm"><option value="60">60 MHz</option><option value="300">300 MHz</option><option value="500">500 MHz</option></select></div><div id="jc_o" class="callout exam-core" style="margin:0;font-size:.85rem;"></div></div>`;
+          const a=c.querySelector('#jc_1'), b=c.querySelector('#jc_2'), f=c.querySelector('#jc_f'), o=c.querySelector('#jc_o');
+          const run=()=>{ const j=Math.abs((+a.value||0)-(+b.value||0))*(+f.value||60); o.innerHTML=`<bdi><strong>J = ${j.toFixed(3)} Hz</strong></bdi> — ${j>=14&&j<=18.5?'آلکن ترانس':(j>=6&&j<=8.8?'ویسینال / ارتو':'سیس یا دوربرد')}`; };
+          a.oninput=run; b.oninput=run; f.onchange=run; run();
+        }
+      });
+      registerSimulator({
+        id:'sim_structure_workbench', title:'🔬 کارگاه ۸ مرحله‌ای حل ساختار مجهول (Workbench)', description:'محاسبه DU، استخراج قطعات، هشدار عدم کفایت شکافت و داوری با Chemical Shift.',
+        mount(c){
+          c.innerHTML=`<div style="display:grid;gap:.6rem;"><div style="display:flex;gap:.3rem;flex-wrap:wrap;"><button type="button" class="btn btn-sm" data-w="4,8,2,0,0,q41,ethyl">C₄H₈O₂</button><button type="button" class="btn btn-sm" data-w="9,12,0,0,0,ar72,cumene">C₉H₁₂</button><button type="button" class="btn btn-sm" data-w="4,7,2,0,1,acid12,acidbr">C₄H₇O₂Br</button></div>
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.3rem;">${[['c',4],['h',8],['o',2],['n',0],['x',0]].map(([k,v])=>`<label style="font-size:.74rem;">${k.toUpperCase()}<input id="wb_${k}" type="number" value="${v}" class="btn btn-sm" style="width:100%;direction:ltr;"/></label>`).join('')}</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.35rem;"><select id="wb_sh" class="btn btn-sm"><option value="q41">کوارتت 4.1 (اتیل استر)</option><option value="s37">سینگلت 3.7 (متیل استر)</option><option value="acid12">پیک 12.0 (COOH)</option><option value="ar72">آروماتیک 7.2 + سپتت 2.9</option><option value="none">بدون شیفت</option></select><select id="wb_hy" class="btn btn-sm"><option value="ethyl">فرضیه: اتیل استر</option><option value="methyl">فرضیه: متیل استر</option><option value="cumene">فرضیه: کومن</option><option value="acidbr">فرضیه: برمواسید</option></select></div>
+            <div id="wb_o" class="callout" style="margin:0;font-size:.83rem;"></div></div>`;
+          const g=id=>c.querySelector('#'+id);
+          const run=()=>{ const C=+g('wb_c').value||0,H=+g('wb_h').value||0,O=+g('wb_o').value||0,N=+g('wb_n').value||0,X=+g('wb_x').value||0,DU=(2*C+2+N-H-X)/2,sh=g('wb_sh').value,hy=g('wb_hy').value;
+            let v='✔ سازگار با داده‌ها.'; if(sh==='none')v='⚠️ بدون Chemical Shift تفکیک ایزومرهای هم‌شکافت ممکن نیست.'; else if(sh==='q41'&&hy==='methyl')v='❌ ناسازگار: 4.1 ppm اتیل استر است.'; else if(sh==='s37'&&hy==='ethyl')v='❌ ناسازگار: 3.7 ppm متیل استر است.';
+            g('wb_o').innerHTML=`<bdi><strong>C${C}H${H}${N?'N'+N:''}${O?'O'+O:''}${X?'X'+X:''} | DU = ${DU}</strong></bdi><br/>${v}`;
+          };
+          ['wb_c','wb_h','wb_o','wb_n','wb_x'].forEach(i=>g(i).oninput=run); ['wb_sh','wb_hy'].forEach(i=>g(i).onchange=run);
+          c.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const p=b.dataset.w.split(',');['wb_c','wb_h','wb_o','wb_n','wb_x','wb_sh','wb_hy'].forEach((id,i)=>g(id).value=p[i]);run();}); run();
+        }
+      });
+    })();
+
+    /* =========================================================
+       MODULE 3: SESSIONS 5, 6 & 7 + SIMULATORS 11–17
+       ========================================================= */
+    (function () {
+      registerSession({
+        id: 's5', number: 5, shortTitle: 'طیف‌سنجی ¹³C و تکنیک DEPT',
+        title: 'جلسه ۵: طیف‌سنجی کربن ۱۳ (¹³C-NMR) و تکنیک پالس چندگانه DEPT',
+        summary: 'خاموشی ¹²C، حساسیت ۱/۶۰۰۰، دکوپلاژ پهن‌باند، پدیده NOE (DMF)، دلایل بطلان انتگرال (T₁ و NOE)، کوپلاژ حلال‌های CDCl₃ و DMSO-d₆، جدول طلایی DEPT و کارگاه سیکلوهگزانول/سیکلوهگزانون.',
+        sections: [
+          {
+            title: '۰۱. هسته ¹³C، خاموشی ¹²C، دکوپلاژ پهن‌باند و دلایل بطلان انتگرال (T₁ و NOE)', tag: 'Exam Core',
+            html: `<p>ایزوتوپ <bdi>¹²C</bdi> زوج–زوج و غیرفعال (<bdi>I=0</bdi>) است؛ اما <bdi>¹³C</bdi> (<bdi>I=1/2</bdi>، فراوانی <bdi>1.1%</bdi>، <bdi>γ ≈ 1/4 γ_H</bdi>) حدود <strong>۶۰۰۰ برابر ضعیف‌تر</strong> از پروتون است (نیاز به FT-NMR). با <strong>دکوپلاژ پهن‌باند (<bdi>¹³C{¹H}</bdi>)</strong> همه پیک‌ها سینگلت می‌شوند.</p>
+              <div class="callout warning"><strong>دلایل بطلان انتگرال کمی در <bdi>¹³C{¹H}</bdi>:</strong> (۱) تفاوت شدید زمان آسایش <bdi>T₁</bdi> (کربن نوع چهارم بسیار طولانی، مثلاً <bdi>CCl₄: 160 s</bdi>)؛ (۲) تقویت ناهمگن <strong>NOE</strong> (<bdi>CH₃ &gt; CH₂ &gt; CH ≫ Cq</bdi>، متناسب با <bdi>1/r³</bdi>؛ کاربرد در تفکیک دو متیل <bdi>DMF</bdi> در <bdi>31.1</bdi> و <bdi>36.2 ppm</bdi>).</div>`
+          },
+          {
+            title: '۰۲. حلال‌های CDCl₃/DMSO-d₆، جدول طلایی DEPT و کارگاه سیکلوهگزانول/سیکلوهگزانون', tag: 'Exam Core',
+            html: `<p>در طیف <bdi>¹³C</bdi>، حلال <strong><bdi>CDCl₃</bdi></strong> (<bdi>n=1, I=1</bdi>) تریپلت <bdi>1:1:1</bdi> در <strong><bdi>77 ppm</bdi></strong> و <strong><bdi>DMSO-d₆</bdi></strong> (<bdi>n=3, I=1</bdi>) هپتت (<bdi>1:3:6:7:6:3:1</bdi>) در <strong><bdi>39.5 ppm</bdi></strong> می‌دهد (جدا از کانال Lock).</p>
+              <div class="table-wrap"><table><thead><tr><th>کربن</th><th>نرمال</th><th><bdi>DEPT-45</bdi></th><th><bdi>DEPT-90</bdi></th><th><bdi>DEPT-135</bdi></th></tr></thead><tbody>
+                <tr><td><bdi>CH</bdi></td><td>مثبت (+)</td><td>مثبت (+)</td><td><strong>مثبت (+)</strong></td><td>مثبت (+)</td></tr>
+                <tr><td><bdi>CH₂</bdi></td><td>مثبت (+)</td><td>مثبت (+)</td><td>صفر</td><td><strong>منفی (−)</strong></td></tr>
+                <tr><td><bdi>CH₃</bdi></td><td>مثبت (+)</td><td>مثبت (+)</td><td>صفر</td><td>مثبت (+)</td></tr>
+                <tr><td><bdi>Cq</bdi></td><td>حاضر</td><td>غایب</td><td>غایب</td><td>غایب</td></tr>
+              </tbody></table></div>
+              <p><strong>کارگاه سیکلوهگزانول ← سیکلوهگزانون:</strong> هر دو ۴ پیک دارند؛ اتمام واکنش با <strong>حذف پیک الکلی <bdi>~70 ppm</bdi></strong> (<bdi>CH–OH</bdi>) و <strong>ظهور کتون در <bdi>211 ppm</bdi></strong> (<bdi>Cq</bdi> غایب در DEPT) اثبات می‌شود.</p>`
+          }
+        ],
+        flashcards: [
+          { id:'s5_fc1', front:'پیک CDCl₃ و DMSO-d₆ در طیف ¹³C چگونه ظاهر می‌شوند؟', back:'CDCl₃ تریپلت 1:1:1 در 77 ppm و DMSO-d₆ هپتت (1:3:6:7:6:3:1) در 39.5 ppm.' },
+          { id:'s5_fc2', front:'کدام کربن در DEPT-90 حاضر و کدام در DEPT-135 منفی است؟', back:'در DEPT-90 فقط CH مثبت است و در DEPT-135 تنها CH₂ منفی (وارونه) است.' },
+          { id:'s5_fc3', front:'دو علت بطلان انتگرال کمی در ¹³C{¹H} چیست؟', back:'اختلاف شدید T₁ (به‌ویژه کربن نوع چهارم) و تقویت ناهمگن NOE.' }
+        ],
+        quiz: [
+          { question: '[Q-09] پیک ۶۴ ppm در DEPT-90 غایب و در DEPT-135 منفی است؛ پیک ۱۷۲ ppm در نرمال حاضر ولی در هر سه DEPT غایب است. این دو کربن کدام‌اند؟', options: ['CH₃ و CH', 'CH₂–O و کربن نوع چهارم کربونیلی (Cq)', 'Cq و CH₂', 'CH و آلدهید'], answerIndex: 1, explanation: 'منفی در DEPT-135 قطعاً CH₂ و غایب در همه DEPTها قطعاً Cq است.' },
+          { question: 'بهترین نشانه اتمام اکسیداسیون سیکلوهگزانول به سیکلوهگزانون در ¹³C-NMR چیست؟', options: ['ظهور ۷۰ ppm', 'حذف کامل ۷۰ ppm و وجود ۴ پیک شامل ۲۱۱ ppm', 'هپتت ۳۹.۵ ppm', 'منفی شدن کربونیل در DEPT-135'], answerIndex: 1, explanation: 'حذف CH–OH (70 ppm) و ظهور C=O کتون (211 ppm) اتمام واکنش را ثابت می‌کند.' },
+          { question: 'پیک CDCl₃ در ¹³C-NMR چگونه است؟', options: ['سینگلت ۷۷ ppm', 'تریپلت ۱:۱:۱ در ۷۷ ppm', 'هپتت ۳۹.۵ ppm', 'کوارتت ۷۷ ppm'], answerIndex: 1, explanation: '2(1)(1)+1 = 3 خط با شدت ۱:۱:۱.' }
+        ]
+      });
+
+      registerSession({
+        id: 's6', number: 6, shortTitle: 'مرتبه دوم، کارپلاس و درختی',
+        title: 'جلسه ۶: کوپلاژ مرتبه دوم، اثر سقف (AB)، کارپلاس و نمودارهای درختی',
+        summary: 'معیار Δν/J > 6، اثر سقف کوانتومی (AB)، کوپلاژهای دوربرد (آلیلی، هموآلیلی، W، پروپارژیلیک)، منحنی کارپلاس و زاویه دووجهی (Q-10)، نمودار درختی با اثبات 1:4:6:4:1 و مثال C₇H₁₄O.',
+        sections: [
+          {
+            title: '۰۱. مرز مرتبه اول/دوم (Δν/J > 6)، اثر سقف و کوپلاژهای دوربرد', tag: 'Exam Core',
+            html: `<p>معیار تقریبی مرتبه اول <strong><bdi>Δν / J &gt; 6</bdi></strong> است. با کاهش این نسبت، <strong>اثر سقف (Roof Effect)</strong> رخ می‌دهد که یک پدیده کوانتومی است (شاخه‌های درونی بلندتر شده و به سمت پروتون جفت‌شده اشاره می‌کنند). افزایش قدرت مگنت (<bdi>60 → 300 MHz</bdi>) مقدار <bdi>Δν/J</bdi> را ۵ برابر کرده و طیف را به <bdi>AX</bdi> ساده می‌کند.</p>
+              <div class="deep-learning" data-title="کوپلاژهای دوربرد (⁴J و ⁵J): آلیلی، هموآلیلی، W و پروپارژیلیک"><p>آلیلی (<bdi>⁴J, 0–3 Hz</bdi>) و هموآلیلی (<bdi>⁵J, 0.5–2.5 Hz</bdi>) از طریق ابر <bdi>π</bdi> آلکن، پروپارژیلیک (<bdi>2–3 Hz</bdi>) از طریق <bdi>C≡C</bdi> و <strong>کوپلاژ W</strong> (<bdi>⁴J, 1–2 Hz</bdi>) در اسکلت‌های دوحلقه‌ای صلب با آرایش زیگزاگ مسطح رخ می‌دهند.</p></div>`
+          },
+          {
+            title: '۰۲. منحنی کارپلاس (Q-10)، نمودار درختی (1:4:6:4:1) و مثال C₇H₁₄O', tag: 'Exam Core',
+            html: `<div class="formula-box">³J ≈ 9.5 cos²φ − 0.8 cosφ + 0.3 &nbsp;|&nbsp; φ = 90° ⇒ ³J ≈ 0 Hz (Q-10)</div>
+              <p>در <strong>کارپلاس (Q-10)</strong> کمینه <bdi>³J</bdi> در <strong><bdi>90°</bdi></strong> (عمود بودن اوربیتال‌ها) و بیشینه در <strong><bdi>180°</bdi></strong> (آنتی/ترانس، <bdi>a-a</bdi> سیکلوهگزان) و <strong><bdi>0°</bdi></strong> است. در <strong>نمودار درختی</strong> همیشه با بزرگ‌ترین <bdi>J₁</bdi> شروع می‌کنیم؛ وقتی دو تریپلت هم‌<bdi>J</bdi> شوند (<bdi>J₁ = J₂</bdi>) نسبت <strong><bdi>1:4:6:4:1</bdi></strong> تولید می‌شود. در مثال <strong><bdi>C₇H₁₄O</bdi></strong> (<bdi>IHD=1</bdi>)، ساختار متقارن ۲،۴-دی‌متیل-۳-پنتانون یک دابلت <bdi>12H (1.08)</bdi> و یک سپتت <bdi>2H (2.75 ppm)</bdi> می‌دهد.</p>`
+          }
+        ],
+        flashcards: [
+          { id:'s6_fc1', front:'طبق کارپلاس، کمترین و بیشترین مقدار ³J در چه زوایایی رخ می‌دهد؟ (Q-10)', back:'کمترین (~0 Hz) در ۹۰ درجه و بیشترین در ۱۸۰ درجه (آنتی) و ۰ درجه (پوشیده).' },
+          { id:'s6_fc2', front:'اگر در نمودار درختی tt دو ثابت J برابر شوند چه نسبتی ساخته می‌شود؟', back:'1 : 4 : 6 : 4 : 1 (کوئینتت پاسکال-خیام).' },
+          { id:'s6_fc3', front:'انتقال طیف از 60 به 300 MHz چه اثری بر Δν/J دارد؟', back:'Δν پنج برابر می‌شود ولی J ثابت می‌ماند ← Δν/J پنج برابر شده و طیف از AB به AX ساده می‌شود.' }
+        ],
+        quiz: [
+          { question: '[Q-10] کمترین مقدار ³J ویسینال در منحنی کارپلاس در چه زاویه دووجهی است؟', options: ['0°', '60°', '90° (عمود بودن اوربیتال‌ها)', '180°'], answerIndex: 2, explanation: 'در زاویه ۹۰ درجه هم‌پوشانی اوربیتال‌های C–H به صفر می‌رسد.' },
+          { question: 'در سیستم AB با Δν/J = 2.5 در 60 MHz، با انتقال به 300 MHz این نسبت چند می‌شود؟', options: ['0.5', '2.5', '12.5 (رژیم AX)', '50'], answerIndex: 2, explanation: '۵ × ۲٫۵ = ۱۲٫۵ (> 6).' },
+          { question: 'جمع خطوط هم‌پوشان در دو تریپلت هم‌J کدام نسبت را می‌سازد؟', options: ['1:2:1:1:2:1', '1:3:3:1', '1:4:6:4:1', '1:1:1:1'], answerIndex: 2, explanation: 'جمع جبری خطوط میانی نسبت ۱:۴:۶:۴:۱ می‌سازد.' }
+        ]
+      });
+
+      registerSession({
+        id: 's7', number: 7, shortTitle: 'dt/ddd، تبادل، ¹⁹F و کایرال',
+        title: 'جلسه ۷: مالتیپلت‌های پیچیده (dt/ddd)، تبادل پروتون، ¹⁹F، کایرال و 2,4-دی‌کلروآنیلین',
+        summary: 'تحلیل dt و ddd (هوئی–ژائو)، تبادل سریع و آزمون D₂O (Q-11)، نمک متیل‌آمونیوم (Q-12)، کوپلاژ ¹H–¹⁹F (Q-13)، معرف‌های کایرال (ee%) و حل جامع ۶ ایزومر 2,4-دی‌کلروآنیلین (Q-14).',
+        sections: [
+          {
+            title: '۰۱. الگوریتم هوئی–ژائو (ddd)، تبادل D₂O (Q-11) و نمک آمونیوم (Q-12)', tag: 'Exam Core',
+            html: `<div class="formula-box">dt: J₁ = |خط 2 − خط 5| &nbsp;|&nbsp; ddd (8 خط): J₃ = |1−2|, J₂ = |1−3|, J₁ = W − (J₂ + J₃)</div>
+              <p><strong>تبادل سریع (Q-11):</strong> در متانول دمای اتاق تبادل <bdi>OH</bdi> سریع‌تر از مقیاس زمانی NMR (<bdi>10⁻²–10⁻³ s</bdi>) است و کوپلاژ حذف می‌شود؛ زیر <strong><bdi>−33 °C</bdi></strong> کوپلاژ (<bdi>OH</bdi> کوارتت، <bdi>CH₃</bdi> دابلت، <bdi>³J=5 Hz</bdi>) ظاهر می‌شود. با افزودن <strong><bdi>D₂O</bdi></strong> پیک <bdi>OH/NH</bdi> حذف و پیک <bdi>HOD</bdi> در <bdi>4.5–5.0 ppm</bdi> ظاهر می‌شود.</p>
+              <div class="callout exam-core"><strong>نمک متیل‌آمونیوم (<bdi>CH₃NH₃⁺ Cl⁻</bdi> در <bdi>pH &lt; 1</bdi> — Q-12):</strong> تقارن چهاروجهی پهن‌شدگی چهارقطبی <bdi>¹⁴N</bdi> را حذف می‌کند؛ <bdi>¹⁴N (I=1)</bdi> تریپلت (<bdi>1:1:1, ~50 Hz</bdi>) و <bdi>CH₃</bdi> کوارتت (<bdi>~5 Hz</bdi>) می‌سازد ← <strong>تریپلتِ کوارتت (۱۲ خط)</strong>!</div>`
+          },
+          {
+            title: '۰۲. کوپلاژ ¹H–¹⁹F (Q-13)، معرف‌های کایرال و 2,4-دی‌کلروآنیلین (Q-14)', tag: 'Exam Core',
+            html: `<p>ایزوتوپ <strong><bdi>¹⁹F</bdi></strong> (<bdi>I=1/2</bdi>، ۱۰۰٪) شکافت بزرگ ایجاد می‌کند: <bdi>²J_HF ≈ 45–55 Hz</bdi> و <bdi>³J_HF ≈ 20–30 Hz</bdi>. در <strong><bdi>F–CH₂–CH₂–Br</bdi> (Q-13)</strong> داریم <bdi>²J_HF = 47.7 Hz</bdi> و <bdi>³J_HH = 4.1 Hz</bdi>. با افزودن <strong>معرف کایرال خالص</strong> (یا استر موشر MTPA)، انانتیومرها به دیاستریومر تبدیل شده و از انتگرال دو پیک مجزا <strong><bdi>ee%</bdi></strong> محاسبه می‌شود.</p>
+              <p><strong>2,4-دی‌کلروآنیلین (<bdi>C₆H₅NCl₂</bdi> — Q-14):</strong> ایزومرهای 2,6 و 3,5 (تقارن، ۲ پیک)، 2,3 (نیازمند تریپلت ارتو) و 2,5 و 3,4 (شیلدشدن دابلت متا کنار <bdi>NH₂</bdi>) رد می‌شوند؛ تنها در <strong>2,4</strong> پروتون <bdi>H3 (7.23 ppm, d, 2.3 Hz)</bdi> بین دو کلر و متا به <bdi>NH₂</bdi> بیشترین شیفت را دارد.</p>`
+          }
+        ],
+        flashcards: [
+          { id:'s7_fc1', front:'در الگوی dt (۶ خط)، J₁ از فاصله کدام دو خط به دست می‌آید؟', back:'فاصله دو قله بلند میانی دو تریپلت (خط ۲ تا خط ۵).' },
+          { id:'s7_fc2', front:'پروتون‌های NH₃⁺ در متیل‌آمونیوم کلرید اسیدی چه الگویی دارند؟ (Q-12)', back:'تریپلتِ کوارتت (۱۲ خط): ¹⁴N تریپلت (~50 Hz) و CH₃ کوارتت (~5 Hz).' },
+          { id:'s7_fc3', front:'چرا H3 در 2,4-دی‌کلروآنیلین بیشترین شیفت (7.23 ppm) را دارد؟ (Q-14)', back:'چون بین دو اتم کلر الکترون‌کشنده قرار گرفته و متا نسبت به NH₂ است.' }
+        ],
+        quiz: [
+          { question: '[Q-11] علت نبود کوپلاژ OH و CH₃ در متانول دمای اتاق چیست؟', options: ['ثابت J صفر است', 'تبادل سریع بین‌مولکولی OH سریع‌تر از مقیاس زمانی NMR', 'اثر چهارقطبی اکسیژن', 'ناهمسانگردی CDCl₃'], answerIndex: 1, explanation: 'تبادل سریع پروتون OH (~10⁵ s⁻¹) میانگین اسپین را صفر می‌کند.' },
+          { question: '[Q-12] چندگانگی NH₃⁺ در CH₃NH₃⁺Cl⁻ در pH < 1 چیست؟', options: ['سینگلت پهن', 'کوارتت ساده', 'تریپلتِ کوارتت (۱۲ خط)', 'dt (۶ خط)'], answerIndex: 2, explanation: '¹⁴N تریپلت و CH₃ کوارتت می‌سازد ← ۱۲ خط.' },
+          { question: '[Q-13] در F–CH₂–CH₂–Br (خط ۱=1383.3، خط ۲=1379.2، خط ۵=1331.5 Hz)، مقادیر ²J_HF و ³J_HH کدام‌اند؟', options: ['47.7 و 4.1 Hz', '29.8 و 8.1 Hz', '51.8 و 4.1 Hz', '4.1 و 47.7 Hz'], answerIndex: 0, explanation: '1379.2 − 1331.5 = 47.7 Hz و 1383.3 − 1379.2 = 4.1 Hz.' },
+          { question: '[Q-14] ترکیب C₆H₅NCl₂ با پیک 4.0 (2H, D₂O) و سه پیک 6.65 (d, 8.6)، 7.02 (dd) و 7.23 (d, 2.3) کدام است؟', options: ['2,6-Dichloroaniline', '2,5-Dichloroaniline', '3,4-Dichloroaniline', '2,4-Dichloroaniline'], answerIndex: 3, explanation: 'تنها در 2,4 پروتون دابلت متا (H3) بیشترین شیفت (7.23 ppm) را دارد.' }
+        ]
+      });
+
+      /* Simulators 11–17 */
+      registerSimulator({
+        id:'sim_dept_detective', title:'🧬 شبیه‌ساز DEPT و کارآگاه نوع کربن', description:'نمایش فاز پیک در Normal/DEPT-45/90/135 + تشخیص خودکار نوع کربن.',
+        mount(c){
+          const P={CH:[1,1,1,1],CH2:[1,1,0,-1],CH3:[1,1,0,1],Cq:[.45,0,0,0]};
+          c.innerHTML=`<div style="display:grid;gap:.6rem;"><div style="display:flex;gap:.3rem;flex-wrap:wrap;">${Object.keys(P).map(k=>`<button type="button" class="btn btn-sm" data-dp="${k}"><bdi>${k}</bdi></button>`).join('')}</div><svg id="dp_s" viewBox="0 0 360 140" style="width:100%;background:var(--bg-elevated);border-radius:8px;"></svg>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.3rem;"><select id="cd_n" class="btn btn-sm"><option value="1">نرمال: حاضر</option><option value="0">غایب</option></select><select id="cd_90" class="btn btn-sm"><option value="1">90: مثبت</option><option value="0">صفر</option></select><select id="cd_135" class="btn btn-sm"><option value="1">135: مثبت</option><option value="-1">منفی</option><option value="0">صفر</option></select></div><div id="cd_o" class="callout success" style="margin:0;font-size:.83rem;"></div></div>`;
+          const s=c.querySelector('#dp_s'), cn=c.querySelector('#cd_n'), c90=c.querySelector('#cd_90'), c135=c.querySelector('#cd_135'), co=c.querySelector('#cd_o');
+          const sh=k=>{ s.innerHTML=['Normal','DEPT-45','DEPT-90','DEPT-135'].map((nm,i)=>{const y=24+i*32,v=P[k][i],col=v>0?'var(--success)':(v<0?'var(--danger)':'var(--text-muted)');return`<text x="10" y="${y+4}" font-size="10" font-weight="700" fill="var(--text-primary)">${nm}</text><line x1="80" y1="${y}" x2="270" y2="${y}" stroke="var(--border-color)"/>${v?`<line x1="175" y1="${y}" x2="175" y2="${y-v*20}" stroke="${col}" stroke-width="3.5"/>`:`<circle cx="175" cy="${y}" r="3" fill="${col}"/>`}<text x="282" y="${y+4}" font-size="10" fill="${col}">${v>0?'+':(v<0?'−':'0')}</text>`;}).join(''); };
+          const det=()=>{const n=cn.value,a=c90.value,b=c135.value; co.innerHTML=n==='0'?'غایب / نامعتبر':(a==='1'&&b==='1'?'✔ متین (CH)':(a==='0'&&b==='-1'?'✔ متیلن (CH₂)':(a==='0'&&b==='1'?'✔ متیل (CH₃)':(a==='0'&&b==='0'?'✔ نوع چهارم (Cq)':'⚠️ ناسازگار'))));};
+          c.querySelectorAll('[data-dp]').forEach(b=>b.onclick=()=>sh(b.dataset.dp)); [cn,c90,c135].forEach(e=>e.onchange=det); sh('CH2'); det();
+        }
+      });
+      registerSimulator({
+        id:'sim_c13_compare', title:'📊 مقایسه‌گر ¹³C اتیل پروپیونات', description:'مقایسه Coupled، Decoupled + NOE و DEPT-135 (به همراه CDCl₃ در 77 ppm).',
+        mount(c){
+          c.innerHTML=`<div style="display:grid;gap:.6rem;"><div style="display:flex;gap:.3rem;flex-wrap:wrap;"><button type="button" class="btn btn-sm" data-m="coupled">کوپل‌شده</button><button type="button" class="btn btn-sm btn-primary" data-m="decoupled">دکوپل + NOE</button><button type="button" class="btn btn-sm" data-m="dept135">DEPT-135</button></div><svg id="cm_s" viewBox="0 0 380 135" style="width:100%;background:var(--bg-elevated);border-radius:8px;"></svg></div>`;
+          const s=c.querySelector('#cm_s'), xP=p=>360-(p/200)*335;
+          const draw=m=>{ c.querySelectorAll('[data-m]').forEach(b=>b.classList.toggle('btn-primary',b.dataset.m===m)); const by=m==='dept135'?72:108; let g=`<line x1="15" y1="${by}" x2="365" y2="${by}" stroke="var(--text-primary)"/>`;
+            if(m==='coupled'){ g+=`<line x1="${xP(174)}" y1="${by}" x2="${xP(174)}" y2="${by-40}" stroke="var(--danger)" stroke-width="2"/>`; [60,27].forEach(p=>[-5,0,5].forEach((dx,i)=>g+=`<line x1="${xP(p)+dx}" y1="${by}" x2="${xP(p)+dx}" y2="${by-(i===1?52:26)}" stroke="var(--accent)" stroke-width="1.8"/>`)); [14,9].forEach(p=>[-6,-2,2,6].forEach((dx,i)=>g+=`<line x1="${xP(p)+dx}" y1="${by}" x2="${xP(p)+dx}" y2="${by-(i===1||i===2?48:20)}" stroke="var(--success)" stroke-width="1.6"/>`)); }
+            else if(m==='decoupled'){ [[174,32,'var(--danger)'],[60,65,'var(--accent)'],[27,63,'var(--accent)'],[14,82,'var(--success)'],[9,78,'var(--success)']].forEach(([p,h,col])=>g+=`<line x1="${xP(p)}" y1="${by}" x2="${xP(p)}" y2="${by-h}" stroke="${col}" stroke-width="2.5"/>`); [-3,0,3].forEach(dx=>g+=`<line x1="${xP(77)+dx}" y1="${by}" x2="${xP(77)+dx}" y2="${by-20}" stroke="var(--text-muted)"/>`); }
+            else { [60,27].forEach(p=>g+=`<line x1="${xP(p)}" y1="${by}" x2="${xP(p)}" y2="${by+42}" stroke="var(--danger)" stroke-width="2.5"/>`); [14,9].forEach(p=>g+=`<line x1="${xP(p)}" y1="${by}" x2="${xP(p)}" y2="${by-50}" stroke="var(--success)" stroke-width="2.5"/>`); }
+            s.innerHTML=g;
+          };
+          c.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>draw(b.dataset.m)); draw('decoupled');
+        }
+      });
+      registerSimulator({
+        id:'sim_roof_ab', title:'🏠 شبیه‌ساز اثر سقف (سیستم AB)', description:'گذار کوانتومی از AX به AB و A₂.',
+        mount(c){
+          c.innerHTML=`<div style="display:grid;gap:.6rem;"><div style="display:flex;gap:.4rem;"><label style="flex:1;font-size:.8rem;">Δν: <bdi id="rf_dl">20</bdi><input id="rf_d" type="range" min="0" max="120" value="20" style="width:100%;"/></label><label style="flex:1;font-size:.8rem;">J: <bdi id="rf_jl">8</bdi><input id="rf_j" type="range" min="2" max="18" value="8" style="width:100%;"/></label></div><svg id="rf_s" viewBox="0 0 360 115" style="width:100%;background:var(--bg-elevated);border-radius:8px;"></svg><div id="rf_o" class="callout" style="margin:0;font-size:.82rem;"></div></div>`;
+          const dE=c.querySelector('#rf_d'), jE=c.querySelector('#rf_j'), s=c.querySelector('#rf_s'), o=c.querySelector('#rf_o');
+          const run=()=>{ const dv=+dE.value, J=+jE.value, C=.5*Math.sqrt(dv*dv+J*J), s2=C>0?J/(2*C):1, iI=1+s2, iO=1-s2, fX=f=>180-f*2;
+            c.querySelector('#rf_dl').textContent=dv; c.querySelector('#rf_jl').textContent=J;
+            const ls=[[C+J/2,iO],[C-J/2,iI],[-C+J/2,iI],[-C-J/2,iO]];
+            s.innerHTML=`<line x1="15" y1="98" x2="345" y2="98" stroke="var(--text-primary)"/>`+ls.map(([f,a])=>`<line x1="${fX(f)}" y1="98" x2="${fX(f)}" y2="${98-a*38}" stroke="var(--accent)" stroke-width="3"/>`).join('');
+            o.innerHTML=`<bdi>Δν/J = <strong>${(dv/J).toFixed(2)}</strong></bdi> | ${dv===0?'A₂ (سینگلت)':(dv/J>6?'AX (مرتبه اول)':'AB (اثر سقف)')}`;
+          };
+          dE.oninput=run; jE.oninput=run; run();
+        }
+      });
+      registerSimulator({
+        id:'sim_karplus', title:'📐 منحنی کارپلاس و نمای نیومن (Q-10)', description:'تغییر زاویه دی‌هیدرال φ (0° تا 180°) و محاسبه ³J.',
+        mount(c){
+          const kJ=a=>Math.max(0,9.5*Math.cos(a*Math.PI/180)**2-.8*Math.cos(a*Math.PI/180)+.3);
+          c.innerHTML=`<div style="display:grid;gap:.6rem;"><div style="display:flex;gap:.3rem;flex-wrap:wrap;">${[0,60,90,180].map(a=>`<button type="button" class="btn btn-sm" data-k="${a}"><bdi>${a}°</bdi></button>`).join('')}</div><input id="kp_r" type="range" min="0" max="180" value="90"/><div style="display:grid;grid-template-columns:1.4fr 1fr;gap:.4rem;"><svg id="kp_s" viewBox="0 0 240 120" style="width:100%;background:var(--bg-elevated);border-radius:8px;"></svg><svg id="kp_n" viewBox="0 0 120 120" style="width:100%;background:var(--bg-elevated);border-radius:8px;"></svg></div><div id="kp_o" class="callout exam-core" style="margin:0;font-size:.82rem;"></div></div>`;
+          const r=c.querySelector('#kp_r'), s=c.querySelector('#kp_s'), n=c.querySelector('#kp_n'), o=c.querySelector('#kp_o');
+          const run=()=>{ const deg=+r.value, j=kJ(deg); let d=''; for(let a=0;a<=180;a+=5) d+=(a?' L ':'M ')+(20+(a/180)*200).toFixed(1)+' '+(100-(kJ(a)/12)*80).toFixed(1);
+            s.innerHTML=`<line x1="20" y1="100" x2="225" y2="100" stroke="var(--text-primary)"/><path d="${d}" fill="none" stroke="var(--accent)" stroke-width="2.2"/><circle cx="${20+(deg/180)*200}" cy="${100-(j/12)*80}" r="5" fill="var(--danger)"/>`;
+            const rad=((deg-90)*Math.PI)/180; n.innerHTML=`<line x1="60" y1="60" x2="${60+Math.cos(rad)*42}" y2="${60+Math.sin(rad)*42}" stroke="var(--accent)" stroke-width="3"/><circle cx="60" cy="60" r="20" fill="var(--bg-surface)" stroke="var(--text-primary)"/><line x1="60" y1="60" x2="60" y2="16" stroke="var(--danger)" stroke-width="3"/>`;
+            o.innerHTML=`<bdi>φ = ${deg}° → <strong>³J = ${j.toFixed(1)} Hz</strong></bdi>${deg>=80&&deg<=100?' (کمینه Q-10)':''}`;
+          };
+          r.oninput=run; c.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{r.value=b.dataset.k;run();}); run();
+        }
+      });
+      registerSimulator({
+        id:'sim_tree_dt_ddd', title:'🌳 کارگاه نمودار درختی (1:4:6:4:1) و dt/ddd', description:'ساخت الگوهای dd، dt، tt و ddd + برابرسازی J₁=J₂.',
+        mount(c){
+          let pat='tt';
+          c.innerHTML=`<div style="display:grid;gap:.6rem;"><div style="display:flex;gap:.3rem;flex-wrap:wrap;"><button type="button" class="btn btn-sm" data-t="dd">dd</button><button type="button" class="btn btn-sm" data-t="dt">dt</button><button type="button" class="btn btn-sm btn-primary" data-t="tt">tt</button><button type="button" class="btn btn-sm" data-t="ddd">ddd</button><button type="button" class="btn btn-sm btn-success" id="tp_eq">J₁=J₂</button></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.3rem;"><input id="t1" type="range" min="4" max="20" value="12"/><input id="t2" type="range" min="1" max="20" value="6"/><input id="t3" type="range" min="1" max="10" value="2"/></div><div id="tp_o" class="callout" style="margin:0;font-size:.83rem;"></div></div>`;
+          const j1=c.querySelector('#t1'), j2=c.querySelector('#t2'), j3=c.querySelector('#t3'), o=c.querySelector('#tp_o');
+          const sp=(ns,k,J)=>{const r=[],off=k==='d'?[[-J/2,1],[J/2,1]]:[[-J,1],[0,2],[J,1]]; ns.forEach(n=>off.forEach(([x,w])=>r.push({p:n.p+x,w:n.w*w}))); return r;};
+          const run=()=>{ let ns=[{p:0,w:1}]; const A=+j1.value,B=+j2.value,C=+j3.value;
+            ns=pat==='dd'?sp(sp(ns,'d',A),'d',B):(pat==='dt'?sp(sp(ns,'d',A),'t',B):(pat==='tt'?sp(sp(ns,'t',A),'t',B):sp(sp(sp(ns,'d',A),'d',B),'d',C)));
+            ns.sort((a,b)=>a.p-b.p); const m=[]; ns.forEach(n=>{if(m.length&&Math.abs(m[m.length-1].p-n.p)<.3)m[m.length-1].w+=n.w; else m.push({p:n.p,w:n.w});});
+            o.innerHTML=`خطوط: <bdi><strong>${m.length}</strong></bdi> | نسبت: <bdi><strong>${m.map(x=>x.w).join(':')}</strong></bdi> | پهنا W: <bdi>${(m[m.length-1].p-m[0].p).toFixed(1)} Hz</bdi>`;
+          };
+          [j1,j2,j3].forEach(e=>e.oninput=run); c.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{pat=b.dataset.t;c.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('btn-primary',x===b));run();});
+          c.querySelector('#tp_eq').onclick=()=>{j2.value=j1.value;run();}; run();
+        }
+      });
+      registerSimulator({
+        id:'sim_exchange_chiral', title:'💧 شبیه‌ساز آزمون D₂O، دمای متانول و تفکیک کایرال (ee%)', description:'حذف OH با D₂O، سردسازی متانول زیر −33°C و محاسبه ee%.',
+        mount(c){
+          let d2o=false;
+          c.innerHTML=`<div style="display:grid;gap:.6rem;"><button type="button" class="btn btn-sm btn-primary" id="ex_b">افزودن D₂O به 2-کلرواتانول</button><div id="ex_d" style="font-size:.82rem;"></div><label style="font-size:.8rem;">دمای متانول (<bdi id="ex_tl">+25°C</bdi>):<input id="ex_t" type="range" min="-45" max="25" step="5" value="25" style="width:100%;"/></label><div id="ex_to" class="callout" style="margin:0;font-size:.82rem;"></div><label style="font-size:.8rem;">سهم S در نمک کایرال (<bdi id="ch_l">75%</bdi>):<input id="ch_s" type="range" min="0" max="100" step="5" value="75" style="width:100%;"/></label><div id="ch_o" class="callout success" style="margin:0;font-size:.82rem;"></div></div>`;
+          const b=c.querySelector('#ex_b'), d=c.querySelector('#ex_d'), t=c.querySelector('#ex_t'), tl=c.querySelector('#ex_tl'), to=c.querySelector('#ex_to'), cs=c.querySelector('#ch_s'), cl=c.querySelector('#ch_l'), co=c.querySelector('#ch_o');
+          const uD=()=>{ b.textContent=d2o?'حذف D₂O':'افزودن D₂O به 2-کلرواتانول'; d.innerHTML=d2o?'✔ پیک OH حذف، HOD (4.75 ppm) ظاهر و CH₂–OD تریپلت ساده شد.':'پیک پهن OH حاضر و CH₂–OH پیچیده است.'; };
+          const uT=()=>{ const v=+t.value; tl.textContent=v+'°C'; to.innerHTML=v>=0?'تبادل سریع: هر دو سینگلت':(v>-33?'پهن‌شدگی میانی':'تبادل کند (&lt;−33°C): OH کوارتت و CH₃ دابلت (5 Hz)!'); };
+          const uC=()=>{ const s=+cs.value, r=100-s; cl.textContent=s+'%'; co.innerHTML=`دو دابلت دیاستریومری <bdi>(S,S): ${s}%</bdi> و <bdi>(R,S): ${r}%</bdi> ← <strong><bdi>ee = ${Math.abs(s-r)}%</bdi></strong>`; };
+          b.onclick=()=>{d2o=!d2o;uD();}; t.oninput=uT; cs.oninput=uC; uD(); uT(); uC();
+        }
+      });
+      registerSimulator({
+        id:'sim_dichloroaniline', title:'💍 غربال‌گر ۶ ایزومر دی‌کلروآنیلین (Q-14)', description:'مقایسه حلقه‌های بنزن و دلیل رد یا تأیید هر ۶ ایزومر C₆H₅NCl₂.',
+        mount(c){
+          const PTS=[{p:1,x:95,y:28,lx:95,ly:12},{p:2,x:132,y:48,lx:154,ly:42},{p:3,x:132,y:92,lx:154,ly:98},{p:4,x:95,y:112,lx:95,ly:130},{p:5,x:58,y:92,lx:36,ly:98},{p:6,x:58,y:48,lx:36,ly:42}];
+          const IS={'2,6':{cl:[2,6],ok:0,m:'❌ رد (تقارن): فقط ۲ پیک آروماتیک.'},'3,5':{cl:[3,5],ok:0,m:'❌ رد (تقارن): بدون کوپلاژ ارتو 8.6 Hz.'},'2,3':{cl:[2,3],ok:0,m:'❌ رد (الگوی J): نیازمند تریپلت ارتو برای H5.'},'2,5':{cl:[2,5],ok:0,m:'❌ رد (شیفت): دابلت متا کنار NH₂ است و شیلد می‌شود.'},'3,4':{cl:[3,4],ok:0,m:'❌ رد (شیفت): دابلت متا (H2) کنار NH₂ است.'},'2,4':{cl:[2,4],ok:1,m:'✔ تأیید نهایی (Q-14): H3 (7.23, d, 2.3 Hz) بین دو کلر و متا به NH₂ دشیلدترین است!'}};
+          c.innerHTML=`<div style="display:grid;gap:.6rem;"><div style="display:flex;gap:.3rem;flex-wrap:wrap;">${Object.keys(IS).map(k=>`<button type="button" class="btn btn-sm" data-i="${k}"><bdi>${k}</bdi></button>`).join('')}</div><div style="display:grid;grid-template-columns:190px 1fr;gap:.5rem;align-items:center;"><svg id="is_s" viewBox="0 0 190 140" style="width:100%;background:var(--bg-elevated);border-radius:8px;"></svg><div id="is_o" class="callout" style="margin:0;font-size:.82rem;"></div></div></div>`;
+          const s=c.querySelector('#is_s'), o=c.querySelector('#is_o');
+          const sh=k=>{ const x=IS[k]; c.querySelectorAll('[data-i]').forEach(b=>b.classList.toggle('btn-primary',b.dataset.i===k));
+            let g=''; for(let i=0;i<6;i++){const a=PTS[i],b=PTS[(i+1)%6]; g+=`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="var(--text-primary)" stroke-width="1.8"/>`;}
+            g+=`<circle cx="95" cy="70" r="20" fill="none" stroke="var(--text-muted)" stroke-dasharray="3 2"/>`;
+            PTS.forEach(pt=>{const isN=pt.p===1,isCl=x.cl.includes(pt.p); g+=`<text x="${pt.lx}" y="${pt.ly+3}" text-anchor="middle" font-size="10" font-weight="800" fill="${isN?'var(--accent)':(isCl?'var(--success)':'var(--danger)')}">${isN?'NH₂':(isCl?'Cl':'H'+pt.p)}</text>`;});
+            s.innerHTML=g; o.className='callout '+(x.ok?'success':'warning'); o.innerHTML=`<strong><bdi>${k}-Dichloroaniline</bdi></strong><br/>${x.m}`;
+          };
+          c.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>sh(b.dataset.i)); sh('2,4');
+        }
+      });
+    })();
+
+    /* =========================================================
+       MODULE 4: EXAM BANK (Q-01..Q-14, EX-01..EX-15, A-01..A-30)
+       ========================================================= */
+    (function () {
+      const HISTORICAL = [
+        { code:'Q-01', session:1, difficulty:'ساده', status:'کامل', isArchive:false, question:'در میدان ۱٫۴۱ تسلا فرکانس لارمور پروتون چقدر است و در ۷٫۰۵ تسلا به چند می‌رسد؟', options:['۶۰ و ۳۰۰ MHz','۱۰۰ و ۵۰۰ MHz','۶۰ و ۱۲۰ MHz','۱۵ و ۳۰۰ MHz'], answerIndex:0, explanation:'۷٫۰۵ تسلا ۵ برابر ۱٫۴۱ تسلا است ← ۵ × ۶۰ = ۳۰۰ MHz.' },
+        { code:'Q-02', session:2, difficulty:'ساده', status:'کامل', isArchive:false, question:'دلیل انتخاب TMS در ¹H و ¹³C و معنای حرکت از راست به چپ در طیف چیست؟', options:['۱۲ پروتون و ۴ کربن معادل در 0 ppm؛ حرکت به چپ یعنی افزایش ppm و دیشیلد شدن','نقطه جوش بالا؛ حرکت به چپ یعنی شیلد شدن','واکنش‌پذیری با CDCl₃','فقط در پروتون کاربرد دارد'], answerIndex:0, explanation:'TMS مرجع 0 ppm است و حرکت به سمت چپ یعنی دشیلدینگ بیشتر.' },
+        { code:'Q-03', session:2, difficulty:'متوسط', status:'کامل', isArchive:false, question:'چرا پروتون‌های بالای صفحه حلقه آروماتیک پل‌دار در مقادیر منفی ppm ظاهر می‌شوند؟', options:['ناحیه شیلدینگ آنیزوتروپی مغناطیسی حلقه','اثر القایی sp²','پیوند هیدروژنی','کوپلاژ با ¹³C'], answerIndex:0, explanation: 'میدان القایی جریان حلقه در بالا و پایین مرکز حلقه خلاف جهت B₀ است.' },
+        { code:'Q-04', session:3, difficulty:'ساده', status:'کامل', isArchive:false, question:'الگوی شکافت گروه CH₂ در گروه اتیل (–CH₂CH₃) چیست؟', options:['کوارتت (۱:۳:۳:۱)','تریپلت (۱:۲:۱)','کوئینتت','دابلت'], answerIndex:0, explanation:'۳ همسایه متیل ← ۳+۱ = ۴ (کوارتت).' },
+        { code:'Q-05', session:4, difficulty:'متوسط', status:'کامل', isArchive:false, question:'دو پیک ۱ پروتونی در ۱۰ و ۱۱ ppm در ترکیبی ۱۵ پروتونی نشانه چیست؟', options:['دو پروتون NH غیرهم‌ارز و به‌شدت دشیلدشده','دو متیل استری','متیلن آلکانی','ایزوپروپیل'], answerIndex:0, explanation:'پیک‌های ۱H در ۱۰–۱۱ ppm مربوط به پروتون‌های NH یا اسیدی دشیلدشده‌اند.' },
+        { code:'Q-06', session:5, difficulty:'ساده', status:'کامل', isArchive:false, question:'پیک ۱۵ ppm در DEPT-135 مثبت و در DEPT-90 غایب است؛ دو پیک دیگر در DEPT-135 منفی و در DEPT-90 غایب‌اند. نوع کربن‌ها؟', options:['CH₃، CH₂، CH₂','CH، CH₃، Cq','CH₃، CH، CH₂','CH₂، CH₂، CH₃'], answerIndex:0, explanation:'مثبت فقط در 135 = CH₃؛ منفی در 135 = CH₂.' },
+        { code:'Q-07', session:5, difficulty:'متوسط', status:'کامل', isArchive:false, question:'در ¹³C کوپل‌شده یک ترکیب ۳-کربنه با DU=1 (بدون پیک بالای ۱۵۰)، دابلت، تریپلت و تریپلت دیده می‌شود. نوع کربن‌ها؟', options:['یک CH و دو CH₂','سه CH₃','یک Cq و دو CH','آلدهید و دو متیل'], answerIndex:0, explanation:'CH دابلت و CH₂ تریپلت می‌دهد.' },
+        { code:'Q-08', session:7, difficulty:'دشوار', status:'کامل', isArchive:false, question:'در ترکیب آروماتیک پارا-کلرو با –NH₂ متصل به کربونیل، الگوی حلقه و دلیل پهن‌شدگی NH₂ چیست؟', options:['دو دابلت آروماتیک (تقارن پارا) و رزونانس/اثر چهارقطبی روی NH₂','چهار سینگلت','حذف پروتون ارتو','یک پیک آروماتیک'], answerIndex:0, explanation:'استخلاف پارا دو دابلت می‌دهد و رزونانس/اثر چهارقطبی ¹⁴N پیک NH₂ را پهن می‌کند.' },
+        { code:'Q-09', session:6, difficulty:'متوسط', status:'کامل', isArchive:false, question:'با انتقال طیف از ۱۰۰ به ۵۰۰ MHz چه تغییری در J (Hz) و عرض مالتیپلت (ppm) رخ می‌دهد؟', options:['J ثابت می‌ماند و عرض ppm فشرده‌تر می‌شود','J پنج برابر می‌شود','هر دو صفر می‌شوند','ppm پنج برابر می‌شود'], answerIndex:0, explanation:'J مستقل از میدان است اما عرض ppm پنج برابر فشرده‌تر می‌شود.' },
+        { code:'Q-10', session:7, difficulty:'دشوار', status:'کامل', isArchive:false, question:'مطابق منحنی کارپلاس و تبادل پروتون در مخلوط اسید استیک و آب کدام گزینه صحیح است؟', options:['در ۹۰° مقدار J حداقل است و در مخلوط اسید/آب یک پیک میانگین OH دیده می‌شود','در ۹۰° بیشترین J و دو پیک OH','J مستقل از زاویه است','پیک متیل حذف می‌شود'], answerIndex:0, explanation:'در ۹۰° هم‌پوشانی حداقل و تبادل سریع اسید/آب یک پیک میانگین ایجاد می‌کند.' },
+        {
+          code:'Q-11', session:4, difficulty:'دشوار', status:'نیازمند بررسی', isArchive:false,
+          question:'[نیازمند بررسی — اسکن ناقص] ترکیب C₉H₉ClO₃ با نوار پهن IR (3300–2400) و 1714 cm⁻¹؛ کدام نتیجه قطعی است؟',
+          options:['حلقه کلروبنزن (DU=5) + اسید کربوکسیلیک (تعیین دقیق ایزومر نیازمند اسکن خوانای ¹H-NMR)','استر آلیفاتیک بدون حلقه','آلکین انتهایی','تعیین یکتا بدون طیف'], answerIndex:0,
+          explanation:'وضعیت داده: نیازمند بررسی — طیف زیر صرفاً بازسازی آموزشی شماتیک است.',
+          spectrumConfig:{ title:'بازسازی آموزشی (شماتیک) — نواحی مورد انتظار C₉H₉ClO₃', type:'1H', minPpm:0, maxPpm:13, freqMHz:300, peaks:[{id:'q11a',groupId:'a',label:'COOH (بازسازی)',ppm:11.8,multiplicity:'broad',integral:1,height:.55,color:'#dc2626',note:'پروتون اسید.'},{id:'q11b',groupId:'b',label:'Ar-H (بازسازی)',ppm:7.35,multiplicity:'d',jHz:8.2,integral:4,height:.85,color:'#2563eb',note:'حلقه کلروبنزن.'},{id:'q11c',groupId:'c',label:'زنجیر (4H)',ppm:3.1,multiplicity:'t',jHz:7,integral:4,height:.7,color:'#059669',note:'ناحیه آلیفاتیک.'}] }
+        },
+        {
+          code:'Q-12', session:7, difficulty:'متوسط', status:'نیازمند بررسی', isArchive:false,
+          question:'[نیازمند بررسی — اسکن ناقص] در متیل کاربامات، چرا متیل متصل به N–H به صورت دابلت ظاهر می‌شود؟',
+          options:['رزونانس آمیدی سرعت تبادل N–H را کم کرده و کوپلاژ ³J با CH₃ برقرار می‌شود','تبادل فوق‌سریع با D₂O','کوپلاژ با اکسیژن','اسپین صفر نیتروژن'], answerIndex:0,
+          explanation:'وضعیت داده: نیازمند بررسی اعداد ppm اسکن؛ استدلال تبادل کند آمیدی قطعی است.',
+          spectrumConfig:{ title:'بازسازی آموزشی (شماتیک) — متیل کاربامات', type:'1H', minPpm:0, maxPpm:8, freqMHz:300, peaks:[{id:'q12a',groupId:'nh',label:'N–H (بازسازی)',ppm:5.3,multiplicity:'broad',integral:1,height:.45,color:'#dc2626',note:'پیک پهن N–H.'},{id:'q12b',groupId:'me',label:'N–CH₃ (d)',ppm:2.8,multiplicity:'d',jHz:5,integral:3,height:.9,color:'#2563eb',note:'دابلت ناشی از N–H.'}] }
+        },
+        { code:'Q-13', session:4, difficulty:'متوسط', status:'بایگانی غیر NMR (IR)', isArchive:true, question:'[بایگانی IR] جذب ۱۷۱۵ cm⁻¹ همراه با نوار پهن ۳۴۰۰–۲۴۰۰ cm⁻¹ در IR نشانه چیست؟', options:['کربوکسیلیک اسید','کتون','انیدرید','آلدهید'], answerIndex:0, explanation:'سؤال مربوط به IR است و در بایگانی غیر NMR قرار دارد.' },
+        { code:'Q-14', session:4, difficulty:'متوسط', status:'بایگانی غیر NMR (MS)', isArchive:true, question:'[بایگانی MS] پیک M+2 هم‌اندازه با M در طیف جرم نشانه کدام اتم است؟', options:['یک اتم برم (⁷⁹Br/⁸¹Br با نسبت ۱:۱)','یک کلر (۳:۱)','نیتروژن','سه اکسیژن'], answerIndex:0, explanation:'سؤال مربوط به MS است و در بایگانی غیر NMR قرار دارد.' }
+      ];
+
+      const EXAMPLES = [
+        { code:'EX-01', session:1, title:'فرکانس لارمور در ۱٫۴۱ و ۷٫۰۵ تسلا', formula:'ν = (γ/2π)·B₀', summary:'60 MHz در 1.41 T و 300 MHz در 7.05 T.' },
+        { code:'EX-02', session:2, title:'سری مشتقات متیل و الکترونگاتیوی', formula:'CH₃F > CH₃OH > CH₃Cl > CH₃Br > CH₃I', summary:'تأکید بر هیدروکسیل بودن CH₃OH.' },
+        { code:'EX-03', session:3, title:'طیف پروتون متیل پروپانوآت', formula:'CH₃CH₂COOCH₃', summary:'سینگلت 3.67، کوارتت 2.35 و تریپلت 1.15 ppm.' },
+        { code:'EX-04', session:3, title:'هم‌ارزی در بوتان و ۲-بوتانول کایرال', formula:'2-Butanol → 6 signals', summary:'شکستن تقارن CH₂ در مجاورت مرکز کایرال.' },
+        { code:'EX-05', session:3, title:'انتگرال پله‌ای بنزیل استات', formula:'C₆H₅CH₂OCOCH₃ (5:2:3)', summary:'دارای SVG تعاملی متصل به مولکول در جلسه ۳.' },
+        { code:'EX-06', session:3, title:'۴-کلروسینامیک اسید (300 MHz)', formula:'Cl-C₆H₄-CH=CH-COOH', summary:'محاسبه J = 16 Hz (ترانس) با SVG در جلسه ۳.' },
+        { code:'EX-07', session:4, title:'حل ساختار C₄H₇O₂Br', formula:'(CH₃)₂C(Br)COOH', summary:'پیک Offset در 12 ppm + سینگلت 6H.' },
+        { code:'EX-08', session:4, title:'شناسایی کومن (ایزوپروپیل‌بنزن)', formula:'C₉H₁₂ (DU=4)', summary:'5H آروماتیک + سپتت 1H + دابلت 6H.' },
+        { code:'EX-09', session:4, title:'استر C₅H₁₀O₂ (اتیل پروپانوآت)', formula:'CH₃CH₂COOCH₂CH₃', summary:'دارای SVG تعاملی در جلسه ۴.' },
+        { code:'EX-10', session:4, title:'پارا-اتیل‌بنزآلدهید (C₉H₁₀O)', formula:'OHC-C₆H₄-CH₂CH₃', summary:'دارای SVG تعاملی در جلسه ۴.' },
+        { code:'EX-11', session:5, title:'اکسیداسیون سیکلوهگزانول در ¹³C', formula:'70 ppm → 211 ppm', summary:'حذف CH–OH و ظهور کربونیل کتون.' },
+        { code:'EX-12', session:5, title:'DEPT-135 و DEPT-90 در آلکین', formula:'R-C≡C-CH₂-CH₃', summary:'حذف کربن داخلی Cq در هر سه DEPT.' },
+        { code:'EX-13', session:6, title:'دیاگرام درختی و اثبات ۱-۴-۶-۴-۱', formula:'J₁ = J₂ ⇒ 1:4:6:4:1', summary:'شبیه‌ساز زنده در آزمایشگاه.' },
+        { code:'EX-14', session:7, title:'استخراج J در dt و ddd', formula:'J₁ = |2−5| / هوئی–ژائو', summary:'شبیه‌ساز زنده در آزمایشگاه.' },
+        { code:'EX-15', session:7, title:'۲،۴-دی‌کلروآنیلین (C₆H₅NCl₂)', formula:'Q-14 (6 Isomers)', summary:'غربال‌گر ۶ ایزومر در آزمایشگاه.' }
+      ];
+
+      const CATS = [
+        { id:'cat-1', name:'۱. فیزیک تشدید' }, { id:'cat-2', name:'۲. محاسبات فرکانس' },
+        { id:'cat-3', name:'۳. شیفت و آنیزوتروپی' }, { id:'cat-4', name:'۴. انتگرال و n+1' },
+        { id:'cat-5', name:'۵. ¹³C و DEPT' }, { id:'cat-6', name:'۶. مرتبه دوم و تبادل' }
+      ];
+      const PRACTICE = [
+        { code:'A-01', cat:'cat-1', session:1, question:'شرط فعال بودن هسته در NMR چیست؟', options:['اسپین غیرصفر (I ≠ 0)','زوج بودن Z و A','اسپین صفر','الکترون جفت‌نشده'], answerIndex:0, explanation:'هسته‌های زوج–زوج اسپین صفر و غیرفعال‌اند.' },
+        { code:'A-02', cat:'cat-1', session:1, question:'هدف از چرخاندن لوله نمونه (Spinning) چیست؟', options:['میانگین‌گیری ناهمگنی میدان و تیز کردن پیک‌ها','افزایش دما','تغییر J','جداسازی ایزومر'], answerIndex:0, explanation:'ناهمگنی میدان افقی میانگین‌گیری می‌شود.' },
+        { code:'A-03', cat:'cat-1', session:1, question:'رزونانس چه زمانی رخ می‌دهد؟', options:['برابری فرکانس RF با فرکانس لارمور','صفر شدن میدان','جوشیدن حلال','نشر خودبه‌خودی'], answerIndex:0, explanation:'تطابق فرکانس RF و لارمور موجب گذار α → β می‌شود.' },
+        { code:'A-04', cat:'cat-1', session:1, question:'جمعیت تراز α و β پس از اعمال میدان چگونه است؟', options:['اندکی به نفع تراز پایین α','۱۰۰٪ در α','بیشتر در β','صفر'], answerIndex:0, explanation:'جمعیت مازاد در تراز α منشأ سیگنال است.' },
+        { code:'A-05', cat:'cat-1', session:1, question:'در FT-NMR چه سیگنالی به طیف تبدیل می‌شود؟', options:['FID در حوزه زمان با تبدیل فوریه','طیف UV','طیف جرم','پالس IR'], answerIndex:0, explanation:'تبدیل فوریه FID زمانی را به طیف فرکانسی می‌برد.' },
+        { code:'A-06', cat:'cat-2', session:1, question:'در مگنت ۹٫۴ تسلا فرکانس پروتون تقریباً چند MHz است؟', options:['۴۰۰ MHz','۲۰۰ MHz','۶۰۰ MHz','۸۰ MHz'], answerIndex:0, explanation:'42.58 × 9.4 ≈ 400 MHz.' },
+        { code:'A-07', cat:'cat-2', session:2, question:'پیک ۱۲۰ Hz در دستگاه ۶۰ MHz چند ppm است؟', options:['۲٫۰ ppm','۷٫۲ ppm','۰٫۵ ppm','۱۲۰ ppm'], answerIndex:0, explanation:'120 / 60 = 2.0 ppm.' },
+        { code:'A-08', cat:'cat-2', session:2, question:'پیک 4.0 ppm در دستگاه ۵۰۰ MHz چند Hz از TMS فاصله دارد؟', options:['۲۰۰۰ Hz','۱۲۰۰ Hz','۴۰۰ Hz','۵۰۰ Hz'], answerIndex:0, explanation:'4.0 × 500 = 2000 Hz.' },
+        { code:'A-09', cat:'cat-2', session:2, question:'فاصله ۰٫۰۲۵ ppm در دستگاه ۳۰۰ MHz معادل چند Hz است؟', options:['۷٫۵ Hz','۲٫۵ Hz','۱۵ Hz','۰٫۲۵ Hz'], answerIndex:0, explanation:'0.025 × 300 = 7.5 Hz.' },
+        { code:'A-10', cat:'cat-2', session:1, question:'چرا به جای CHCl₃ از CDCl₃ استفاده می‌شود؟', options:['دوتریوم در فرکانس پروتون تشدید نمی‌شود','قطبیت بالا','بنزن معمولی','استون معمولی'], answerIndex:0, explanation:'دوتریوم سیگنال مزاحم در ¹H ندارد و کانال Lock را می‌سازد.' },
+        { code:'A-11', cat:'cat-3', session:2, question:'کدام پروتون در ۹ تا ۱۰ ppm ظاهر می‌شود؟', options:['آلدهیدی (–CHO)','آلکینی','متیل آلکانی','سیکلوپروپان'], answerIndex:0, explanation:'آنیزوتروپی کربونیل + کشش اکسیژن.' },
+        { code:'A-12', cat:'cat-3', session:2, question:'ترتیب نزولی ppm بر اساس هیبرید کربن چیست؟', options:['آلکن (sp²) > آلکین (sp) > آلکان (sp³)','آلکین > آلکن > آلکان','آلکان > آلکن > آلکین','یکسان'], answerIndex:0, explanation:'آنیزوتروپی استوانه‌ای پروتون آلکینی را شیلد می‌کند.' },
+        { code:'A-13', cat:'cat-3', session:2, question:'تغییر غلظت و حلال بیشترین اثر را روی کدام پروتون دارد؟', options:['OH و NH (پیوند هیدروژنی)','هگزان','بنزن','TMS'], answerIndex:0, explanation:'پیوند هیدروژنی به غلظت و حلال بسیار حساس است.' },
+        { code:'A-14', cat:'cat-3', session:2, question:'متیل تولوئن (بنزیلیک) در چه بازه‌ای ظاهر می‌شود؟', options:['۲٫۳ تا ۲٫۷ ppm','۰٫۹ ppm','۷٫۲ ppm','۱۱٫۵ ppm'], answerIndex:0, explanation:'حاشیه دشیلدینگ حلقه آروماتیک.' },
+        { code:'A-15', cat:'cat-3', session:2, question:'کدام پروتون در ۱۱ تا ۱۲ ppm پیک پهن می‌دهد؟', options:['کربوکسیلیک اسید (–COOH)','متیل استر','آلکن سیس','آمین'], answerIndex:0, explanation:'پیوند هیدروژنی قوی و کشندگی کربونیل.' },
+        { code:'A-16', cat:'cat-4', session:3, question:'دی‌اتیل اتر چند سیگنال و با چه شکافتی می‌دهد؟', options:['۲ سیگنال: کوارتت (4H) و تریپلت (6H)','۴ سیگنال','۱ سینگلت','۲ دابلت'], answerIndex:0, explanation:'تقارن اتر دو اتیل را معادل می‌کند.' },
+        { code:'A-17', cat:'cat-4', session:3, question:'چرا پروتون‌های هم‌ارز مغناطیسی همدیگر را نمی‌شکنند؟', options:['کوپلاژ بین هم‌ارزهای مغناطیسی شکافت قابل‌مشاهده نمی‌دهد','فاصله زیاد','انتگرال صفر','فقط در 60 MHz'], answerIndex:0, explanation:'قانون بنیادی شکافت اسپین–اسپین.' },
+        { code:'A-18', cat:'cat-4', session:3, question:'انتگرال‌های ۲۴، ۱۶ و ۸ میلی‌متر برای ترکیبی ۱۲ پروتونی معادل چند H است؟', options:['۶، ۴ و ۲ پروتون','۳، ۲ و ۱','۸، ۲ و ۲','۴، ۴ و ۴'], answerIndex:0, explanation:'نسبت ۳:۲:۱ ضربدر ۲ = ۶H، ۴H، ۲H.' },
+        { code:'A-19', cat:'cat-4', session:4, question:'پروتون وسط در ۲-برموپروپان به چند شاخه می‌شکند؟', options:['۷ شاخه (سپتت)','۴ شاخه','۳ شاخه','۲ شاخه'], answerIndex:0, explanation:'۶ همسایه متیل ← ۶+۱ = ۷.' },
+        { code:'A-20', cat:'cat-4', session:4, question:'در کدام حالت دو پروتون یک CH₂ دیاسترئوتوپیک می‌شوند؟', options:['مجاورت با مرکز کایرال','اتانول خالص','متیل استات','بنزن'], answerIndex:0, explanation:'مرکز کایرال تقارن را از بین می‌برد.' },
+        { code:'A-21', cat:'cat-5', session:5, question:'چرا انتگرال در ¹³C{¹H} معتبر نیست؟', options:['تفاوت T₁ و تقویت نامتقارن NOE','اسپین صفر ¹³C','جذب CDCl₃','رسم منفی'], answerIndex:0, explanation:'کربن نوع چهارم T₁ طولانی و NOE ناچیز دارد.' },
+        { code:'A-22', cat:'cat-5', session:5, question:'اثر Broadband Proton Decoupling در ¹³C چیست؟', options:['حذف شکافت‌های C–H و تبدیل به سینگلت تیز','دو برابر شدن شاخه‌ها','منفی شدن CH₂','حذف کربونیل'], answerIndex:0, explanation:'اشباع پروتون‌ها تمام چندشاخه‌ای‌ها را حذف می‌کند.' },
+        { code:'A-23', cat:'cat-5', session:5, question:'تریپلت ۱:۱:۱ در ۷۷ ppm طیف ¹³C چیست؟', options:['حلال CDCl₃','کربونیل اسید','متوکسی','TMS'], answerIndex:0, explanation:'کوپلاژ ¹³C با یک دوتریوم (I=1).' },
+        { code:'A-24', cat:'cat-5', session:5, question:'۲۱ (+ در 135، غایب 90)، ۷۱ (− در 135، غایب 90) و ۱۸ (غایب در هر دو) به ترتیب چیستند؟', options:['CH₃، CH₂ و Cq','CH، CH₃ و CH₂','CH₂، CH و CH₃','CH₃، CH و CH₂'], answerIndex:0, explanation:'مطابق جدول طلایی DEPT.' },
+        { code:'A-25', cat:'cat-5', session:5, question:'پارا-زایلن در ¹³C{¹H} چند سیگنال می‌دهد؟', options:['۳ سیگنال','۶ سیگنال','۸ سیگنال','۲ سیگنال'], answerIndex:0, explanation:'متیل‌ها (۱)، کربن‌های ipso (۱) و ۴ کربن CH حلقه (۱).' },
+        { code:'A-26', cat:'cat-6', session:6, question:'اثر سقف (Roof Effect) چه زمانی ظاهر می‌شود؟', options:['کوچک بودن نسبت Δν/J (رژیم AB)','نبود کوپلاژ','فقط در ¹³C','انقضای حلال'], answerIndex:0, explanation:'ویژگی کوانتومی طیف مرتبه دوم.' },
+        { code:'A-27', cat:'cat-6', session:6, question:'کوپلاژ با دو همسایه منفرد J₁=12 و J₂=4 Hz چه الگویی می‌دهد؟', options:['dd (۴ خط هم‌شدت)','تریپلت','کوارتت','سینگلت'], answerIndex:0, explanation:'دابلتِ دابلت (dd).' },
+        { code:'A-28', cat:'cat-6', session:7, question:'افزودن D₂O به نمونه چه اثری دارد؟', options:['حذف پیک پروتون‌های تبادل‌پذیر (OH, NH, COOH)','حذف آروماتیک','دو برابر شدن J','حذف CH₃'], answerIndex:0, explanation:'تبادل H با D و محو شدن پیک در ¹H-NMR.' },
+        { code:'A-29', cat:'cat-6', session:7, question:'علت پهن‌شدگی ذاتی پیک N–H چیست؟', options:['آسایش چهارقطبی ¹⁴N (I=1)','رادیواکتیویته','اسپین صفر','فاصله از TMS'], answerIndex:0, explanation:'گشتاور چهارقطبی هسته نیتروژن-۱۴.' },
+        { code:'A-30', cat:'cat-6', session:7, question:'روش تعیین ee% الکل کایرال در NMR چیست؟', options:['استفاده از معرف کایرال (تبدیل به دیاستریومر با شیفت متفاوت، مانند استر موشر)','نقطه ذوب','TMS زیاد','دمای ۱۰۰- بدون مشتق'], answerIndex:0, explanation:'دیاستریومرها پیک‌های مجزا با انتگرال متناسب با درصد هر انانتیومر می‌دهند.' }
+      ];
+
+      registerExamBank({ historical: HISTORICAL, examples: EXAMPLES, practice: PRACTICE });
+
+      Router.renderExams = function (view) {
+        const allSessionQuiz = COURSE_DATA.sessions.flatMap(s => s.quiz || []);
+        const combinedPool = [...PRACTICE, ...allSessionQuiz];
+        const allFlashcards = COURSE_DATA.sessions.flatMap(s => s.flashcards || []);
+        const nmrHist = HISTORICAL.filter(h => !h.isArchive), archHist = HISTORICAL.filter(h => h.isArchive);
+
+        view.innerHTML = `<div class="card"><h1>🎯 بانک جامع آزمون، سؤالات تاریخی و ۱۵ مثال استاد</h1>
+          <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.75rem;">
+            <button class="btn btn-primary btn-sm" id="eb_pr">📚 ۳۰ سؤال تألیفی (۶ دسته)</button>
+            <button class="btn btn-danger btn-sm" id="eb_tm">⏱ آزمون زمان‌دار (۲۰ سؤال — قفل مرجع)</button>
+            <button class="btn btn-sm" id="eb_hs">🏛 تاریخی (${nmrHist.length} NMR + ${archHist.length} بایگانی)</button>
+            <button class="btn btn-sm" id="eb_ex">🔬 ۱۵ مثال حل‌شده استاد</button>
+            <button class="btn btn-sm" id="eb_fc">🎴 کل فلش‌کارت‌ها (${allFlashcards.length})</button>
+          </div></div><div id="examWorkspace"></div>`;
+        const ws = document.getElementById('examWorkspace');
+
+        document.getElementById('eb_pr').onclick = () => {
+          ws.innerHTML = `<div class="card"><div class="tabs-bar" id="pCats"><button class="tab-btn active" data-c="all">همه ۳۰ سؤال</button>${CATS.map(c=>`<button class="tab-btn" data-c="${c.id}">${c.name}</button>`).join('')}</div><div id="pMount"></div></div>`;
+          const m = ws.querySelector('#pMount');
+          const go = cat => QuizEngine.start(m, { title: cat==='all'?'۳۰ سؤال تألیفی جامع':CATS.find(x=>x.id===cat).name, questions: cat==='all'?PRACTICE:PRACTICE.filter(q=>q.cat===cat), timed:false });
+          ws.querySelectorAll('#pCats .tab-btn').forEach(b => b.onclick = () => { ws.querySelectorAll('#pCats .tab-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); go(b.dataset.c); });
+          go('all');
+        };
+        document.getElementById('eb_tm').onclick = () => QuizEngine.start(ws, { title: 'آزمون شبیه‌ساز نهایی NMR (۲۰ سؤال — ۲۰ دقیقه)', questions: [...combinedPool].sort(() => Math.random() - 0.5).slice(0, 20), timed: true, durationSec: 1200 });
+        document.getElementById('eb_hs').onclick = () => {
+          ws.innerHTML = `<div style="margin-bottom:.75rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;"><strong>سؤالات تاریخی NMR (Q-01 تا Q-12)</strong><button class="btn btn-sm" id="tArch">📦 نمایش بایگانی غیر NMR (IR و MS: ${archHist.length})</button></div>
+            ${nmrHist.map((h,i)=>`<div class="card"><div class="card-header"><div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;"><span class="badge badge-info"><bdi>${h.code}</bdi></span><span class="badge ${h.status==='نیازمند بررسی'?'badge-core':'badge-success'}">${h.status}</span><button class="btn btn-sm" onclick="Router.go('session-${h.session}')">جلسه ${h.session} ↗</button></div><span class="badge badge-deep">${h.difficulty}</span></div><p style="font-weight:700;color:var(--text-primary);">${h.question}</p>${h.spectrumConfig?`<div class="hsp" data-hi="${i}"></div>`:''}<div class="callout success" style="margin-bottom:0;"><strong>پاسخ صحیح:</strong> ${h.options[h.answerIndex]}<br/><small>${h.explanation}</small></div></div>`).join('')}
+            <div id="archBox" style="display:none;margin-top:1rem;"><h3>📦 بایگانی غیر NMR (IR و MS)</h3>${archHist.map(h=>`<div class="card" style="border-right:4px solid var(--text-muted);"><span class="badge badge-danger">${h.code} — ${h.status}</span><p style="font-weight:700;margin-top:.4rem;">${h.question}</p><p style="margin:0;font-size:.86rem;"><strong>پاسخ:</strong> ${h.options[h.answerIndex]} — ${h.explanation}</p></div>`).join('')}</div>`;
+          ws.querySelectorAll('.hsp').forEach(el => NMRSpectrumEngine.render(el, nmrHist[Number(el.dataset.hi)].spectrumConfig));
+          const ab = ws.querySelector('#tArch'), ad = ws.querySelector('#archBox');
+          ab.onclick = () => { const op = ad.style.display === 'none'; ad.style.display = op ? 'block' : 'none'; ab.textContent = op ? 'بستن بایگانی غیر NMR' : `📦 نمایش بایگانی غیر NMR (IR و MS: ${archHist.length})`; };
+        };
+        document.getElementById('eb_ex').onclick = () => {
+          ws.innerHTML = `<div class="grid-2">${EXAMPLES.map(ex=>`<div class="card" style="margin-bottom:0;display:flex;flex-direction:column;justify-content:space-between;"><div><div style="display:flex;justify-content:space-between;margin-bottom:.4rem;"><span class="badge badge-info"><bdi>${ex.code}</bdi></span><span class="badge badge-core">جلسه ${ex.session}</span></div><h3 style="font-size:.96rem;">${ex.title}</h3><div class="formula-box" style="padding:.35rem;font-size:.84rem;">${ex.formula}</div><p style="font-size:.84rem;">${ex.summary}</p></div><button class="btn btn-sm btn-primary" onclick="Router.go('session-${ex.session}')">مشاهده در جلسه ${ex.session} ←</button></div>`).join('')}</div>`;
+        };
+        document.getElementById('eb_fc').onclick = () => FlashcardEngine.render(ws, allFlashcards, 'کل فلش‌کارت‌های دوره (۷ جلسه)');
+        document.getElementById('eb_pr').click();
+      };
+    })();
+
+    /* =========================================================
+       BOOTSTRAP APPLICATION
+       ========================================================= */
+    document.addEventListener('DOMContentLoaded', () => {
+      AppState.load();
+      UI.updateGlobalProgress();
+      Router.renderSidebar();
+      Router.renderCurrent();
+      if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === 'function') window.notebookAppApi.notifyAppReady();
+    });
+  </script>
+</body>
+</html>
